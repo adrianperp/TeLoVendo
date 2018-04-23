@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/estiloActivityNuevo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.adrian.telovendo.activities.ActivityNuevo">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editNuevoNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoNombre"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editNuevoDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoDescripcion"
+                    android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editNuevoMarca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoMarca"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editNuevoModelo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoModelo"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editNuevoPrecio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoPrecio"
+                    android:inputType="numberDecimal" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editNuevoPeso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoPeso"
+                    android:inputType="numberDecimal" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:entries="@array/array_categorias"
+                android:prompt="@string/spinner_categorias"
+                android:spinnerMode="dialog" />
+
+            <TextView
+                android:id="@+id/textNuevoAnyadirFotos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/textNuevoAnyadirFotos" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layoutFotos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/botonNuevoAnyadirFoto"
+                        android:layout_width="250px"
+                        android:layout_height="250px"
+                        android:background="@color/rojo"
+                        android:src="@drawable/ic_button_add" />
+
+                </LinearLayout>
+
+
+            </HorizontalScrollView>
+
+
+            <Button
+                android:id="@+id/botonNuevoGuardarBorrador"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/botonNuevoGuardarBorrador"
+                style="@style/estiloBoton"
+                android:background="@color/vainilla"/>
+
+            <Button
+                android:id="@+id/botonNuevoPublicar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/botonNuevoPublicar"
+                style="@style/estiloBoton"
+                android:background="@color/azulClaro"/>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</RelativeLayout>

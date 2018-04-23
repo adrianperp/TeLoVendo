@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/ic_menu_inicio"
+            android:title="@string/drawer_inicio" />
+        <item
+            android:id="@+id/nav_notificaciones"
+            android:icon="@drawable/ic_menu_notificaciones"
+            android:title="@string/drawer_notificaciones" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_menu_chat"
+            android:title="@string/drawer_chat" />
+        <item
+            android:id="@+id/nav_ajustes"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/drawer_ajustes" />
+    </group>
+
+    <item android:title="Área personal">
+        <menu>
+            <item
+                android:id="@+id/nav_cuenta"
+                android:icon="@drawable/ic_menu_cuenta"
+                android:title="@string/drawer_perfil" />
+        </menu>
+    </item>
+
+</menu>

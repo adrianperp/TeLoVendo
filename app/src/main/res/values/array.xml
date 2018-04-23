@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_categorias">
+        <item>Motor</item>
+        <item>Hogar</item>
+        <item>Electrónica</item>
+        <item>Videojuegos</item>
+        <item>Hobby y Deporte</item>
+        <item>Ropa, calzado y accesorios</item>
+        <item>Libros, Música y Películas</item>
+        <item>Infantil</item>
+        <item>Animales</item>
+        <item>Electrodomésticos</item>
+    </string-array>
+</resources>

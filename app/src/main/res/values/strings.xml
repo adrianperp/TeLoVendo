@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">TeLoVendo</string>
+    <string name="passwordLogin">Password</string>
+    <string name="userLogin">User</string>
+    <string name="buttonAccederLogin">Acceder</string>
+    <string name="buttonRegisterLogin">Regístrate</string>
+    <string name="contentDesc">Imagen de fondo</string>
+    <string name="title_activity_main">ActivityMain</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="drawer_inicio">Inicio</string>
+    <string name="drawer_notificaciones">Notificaciones</string>
+    <string name="drawer_ajustes">Ajustes</string>
+    <string name="drawer_chat">Chat</string>
+    <string name="drawer_perfil">Mi cuenta</string>
+
+    <!-- Activity Nuevo -->
+    <string name="editNuevoNombre">Nombre</string>
+    <string name="editNuevoDescripcion">Descripción</string>
+    <string name="editNuevoMarca">Marca</string>
+    <string name="editNuevoModelo">Modelo</string>
+    <string name="editNuevoPrecio">Precio</string>
+    <string name="editNuevoPeso">Peso</string>
+    <string name="botonNuevoGuardarBorrador">Guardar borrador</string>
+    <string name="botonNuevoPublicar">Publicar</string>
+    <string name="textNuevoAnyadirFotos">Añade alguna foto</string>
+    <string name="textRegister">Regístrate</string>
+    <string name="nombreRegistro">Nombre</string>
+    <string name="apellidosRegistro">Apellidos</string>
+    <string name="emailRegistro">Email</string>
+    <string name="contrasenyaRegistro">Contraseña</string>
+    <string name="buttonRegister">Confirmar registro</string>
+    <string name="textIniciarLogin">Iniciar sesión</string>
+
+    <!-- Activity Registro -->
+    <string name="toastDatosIncorrectos">Algunos campos están vacíos</string>
+    <string name="toastContrasenyaCorta">La contraseña debe contener al menos 6 caracteres</string>
+
+    <!-- Activity Login -->
+    <string name="toastErrorLogin">El usuario o la contraseña no son correctos</string>
+
+
+    <string name="spinner_categorias">Categoría</string>
+    <string name="textNombreCuenta">Nombre</string>
+    <string name="textEmailCuenta">Email</string>
+    <string name="textSexoCuenta">Sexo</string>
+    <string name="textApellidosCuenta">Apellidos</string>
+    <string name="textPaisCuenta">País</string>
+    <string name="textCiudadCuenta">Ciudad</string>
+    <string name="textTotalVentasCuenta">Ventas</string>
+    <string name="textTotalComprasCuenta">Compras</string>
+    <string name="textReputacionCuenta">Reputación</string>
+    <string name="toastNuevo">CACA</string>
+    <string name="toastRegistroCorrecto">Te has registrado correctamente</string>
+    <string name="toastRegistroIncorrecto">El registro ha fallado</string>
+    <string name="action_editar">Editar</string>
+
+    <!-- Ruta de imagenes de productos del storage -->
+    <string name="ruta">productos/</string>
+
+
+</resources>

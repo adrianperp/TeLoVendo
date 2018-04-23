@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "731486267424",
+    "firebase_url": "https://telovendo-b8136.firebaseio.com",
+    "project_id": "telovendo-b8136",
+    "storage_bucket": "telovendo-b8136.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731486267424:android:678d7a5d1057ffba",
+        "android_client_info": {
+          "package_name": "com.example.adrian.telovendo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731486267424-obvcgblff0de14hfjrta33b6bbbsek27.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.adrian.telovendo",
+            "certificate_hash": "ed155a90b6aa33716dfc27c544ebb2f044c0167e"
+          }
+        },
+        {
+          "client_id": "731486267424-07m8pf0eqs6igcq64re8ldvegj7sp3su.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSBho3Vep0MyrnybBdRROHI7zp-sW2S7c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731486267424-07m8pf0eqs6igcq64re8ldvegj7sp3su.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
