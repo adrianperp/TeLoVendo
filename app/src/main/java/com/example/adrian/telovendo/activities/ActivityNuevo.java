@@ -1,7 +1,7 @@
 package com.example.adrian.telovendo.activities;
 
-import android.app.ProgressDialog;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -71,12 +71,18 @@ public class ActivityNuevo extends AppCompatActivity {
         botonNuevoPublicar = findViewById(R.id.botonNuevoPublicar);
         layoutFotos = findViewById(R.id.layoutFotos);
 
-        firebaseUtils = new FirebaseUtils(this);
+        firebaseUtils = new FirebaseUtils(ActivityNuevo.this);
 
         botonNuevoPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anyadirProducto();
+                // Comprobar que se hayan introducido datos antes de anyadir producto
+                if(isDatosValidos()) {
+                    anyadirProducto();
+                }
+                else {
+                    Toast.makeText(ActivityNuevo.this, "Algunos campos obligatorios están vacíos", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -88,6 +94,17 @@ public class ActivityNuevo extends AppCompatActivity {
         });
     }
 
+    public boolean isDatosValidos(){
+        String nombre = editNuevoNombre.getText().toString().trim();
+        String descripcion = editNuevoDescripcion.getText().toString().trim();
+        String precio = editNuevoPrecio.getText().toString();
+        //String categoria;
+        if(nombre.isEmpty() || descripcion.isEmpty() || precio.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
     protected void anyadirProducto(){
         // Se suben las imagenes al Storage
         firebaseUtils.subirImagenes(fotosGaleria);
@@ -95,7 +112,7 @@ public class ActivityNuevo extends AppCompatActivity {
         Producto p = getProducto();
         // Subimos el producto a la base de datos
         firebaseUtils.subirProducto(p);
-
+        Toast.makeText(this, "Producto subido", Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -114,14 +131,15 @@ public class ActivityNuevo extends AppCompatActivity {
 
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             try {
+                fotosGaleria = data;
                 if (data.getClipData() != null) {
                     // Nos guardamos las imagenes que vamos a subir
-                    fotosGaleria = data;
+                    //fotosGaleria = data;
                     // Insertamos las imagenes en el layout
                     anyadirImagenesLayout();
                 }
                 else if (data.getData() != null) {
-                    Toast.makeText(getApplicationContext(), "Selected Single File", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityNuevo.this, "Selected Single File", Toast.LENGTH_SHORT).show();
                 }
             }
             catch (Exception e){
@@ -169,12 +187,21 @@ public class ActivityNuevo extends AppCompatActivity {
 
     private ArrayList<String> getFileNameList(){
         ArrayList<String> listaNombres = new ArrayList<String>();
-        int totalItemsSeleccionados = fotosGaleria.getClipData().getItemCount();
         Uri uri;
-        for (int i = 0; i < totalItemsSeleccionados; i++) {
-            uri = fotosGaleria.getClipData().getItemAt(i).getUri();
+        // Se comprueba si se ha seleccionado mas de una foto
+        if(fotosGaleria.getClipData() == null) {
+            uri = fotosGaleria.getData();
             listaNombres.add(firebaseUtils.getFileName(uri));
         }
+        else {
+            int totalItemsSeleccionados = fotosGaleria.getClipData().getItemCount();
+            for (int i = 0; i < totalItemsSeleccionados; i++) {
+                uri = fotosGaleria.getClipData().getItemAt(i).getUri();
+                listaNombres.add(firebaseUtils.getFileName(uri));
+            }
+        }
+
+
         return listaNombres;
     }
 }

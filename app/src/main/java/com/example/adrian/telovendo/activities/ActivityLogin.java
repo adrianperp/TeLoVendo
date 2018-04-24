@@ -64,6 +64,13 @@ public class ActivityLogin extends AppCompatActivity {
                 startActivity(activityRegistro);
             }
         });
+
+        //LOGUEAMOS AL USER EN PLAN GUARRO
+        editEmail.setText("user@gmail.com");
+        editContrasenya.setText("123456");
+        loginUser();
+
+
     }
 
     private void loginUser() {

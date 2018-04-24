@@ -1,12 +1,14 @@
 package com.example.adrian.telovendo.firebase;
 
 import android.app.ProgressDialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -98,27 +100,25 @@ public class FirebaseUtils {
     }
 
     public void subirImagenes(Intent data){
-        int totalItemsSeleccionados = data.getClipData().getItemCount();
-        final int total2 = totalItemsSeleccionados;
-
         String dir = STORAGE_PATH + ActivityMain.user.getEmail();
-        Uri uri;
+        ArrayList<Uri> listaUris = getUris(data);
+        final int total = listaUris.size();
+        System.out.println(">>>>>>>>>>>>>>>total uris" + " hay " + total + " uris");
         final ArrayList<String> fileDoneList = new ArrayList<String>();
-
         final ProgressDialog dialog = new ProgressDialog(context);
         dialog.setTitle("Subiendo imagen");
         dialog.show();
-
-        for (int i = 0; i < totalItemsSeleccionados; i++) {
-            uri = data.getClipData().getItemAt(i).getUri();
+        System.out.println(">>>>>>>>>>>>>>>dialogo" + "se muestra dialogo");
+        for (Uri uri : listaUris) {
+            System.out.println(">>>>>>>>>>>>>>>uri num " + listaUris.indexOf(uri)+ " " + uri.toString());
             final String nombreArchivo = getFileName(uri);
-
+            System.out.println(">>>>>>>>>>>>>>>nombre archivo" + nombreArchivo);
             // Referencia de almacenamiento
             StorageReference mStorage = FirebaseStorage.getInstance().getReference();
-
+            System.out.println(">>>>>>>>>>>>>>>storage reference" + "creando referencia de almacenamiento");
             // ruta / nombre del archivo
             StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
-
+            System.out.println(">>>>>>>>>>>>>>>filetoupload" + "indicando donde se subira el archivo");
             fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -132,12 +132,36 @@ public class FirebaseUtils {
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    int totalRestantes = total2 - fileDoneList.size();
+                    int totalRestantes = total - fileDoneList.size();
                     dialog.setMessage("Subiendo fotos: " + totalRestantes + " restantes");
                 }
             });
         }
-        dialog.dismiss();
+        //dialog.dismiss();
+    }
+
+    // Retorna las uris desde la galeria
+    public ArrayList<Uri> getUris(Intent data) {
+        Uri uri;
+        ArrayList<Uri> listaUris = new ArrayList<Uri>();
+
+        if (data.getData() != null) {
+            System.out.println(">>>>>>>>>>>>>>>data.getdata" + " es una unica imagen");
+            uri = data.getData();
+            listaUris.add(uri);
+        } else if (data.getClipData() != null) {
+            System.out.println(">>>>>>>>>>>>>>>data.getdata" + " son mas de dos imagenes");
+
+            ClipData clipData = data.getClipData();
+            ClipData.Item item;
+            System.out.println(">>>>>>>>>>>>>>>clipdata" + " agarra el clipdata");
+            for (int i = 0; i < clipData.getItemCount(); i++) {
+                item = clipData.getItemAt(i);
+                uri = item.getUri();
+                listaUris.add(uri);
+            }
+        }
+        return listaUris;
     }
 
     public String getFileName(Uri uri) {
