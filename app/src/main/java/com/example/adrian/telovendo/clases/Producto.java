@@ -15,27 +15,27 @@ public class Producto {
     private double precio;
     private double valoracion = -1;
     private double peso;
+    private String categoria;
+
     private ArrayList<String> fotos = new ArrayList<String>();
 
     // Constructores
-    public Producto(String nombre, String descripcion, String marca, String modelo, double precio, double peso, ArrayList<String> fotos) {
+
+    public Producto(String nombre, String descripcion, String marca, String modelo, double precio, double peso, String categoria, ArrayList<String> fotos) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
         this.peso = peso;
+        this.categoria = categoria;
         this.fotos = fotos;
     }
-
     public Producto(){
 
     }
 
-
-
     // Getters y setters
-
     public String getNombre() {
         return nombre;
     }
@@ -90,6 +90,14 @@ public class Producto {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public ArrayList<String> getFotos() {

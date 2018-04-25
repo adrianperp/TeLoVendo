@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,20 +40,26 @@ import java.util.List;
 
 public class ActivityNuevo extends AppCompatActivity {
 
-    private static EditText editNuevoNombre;
-    private static EditText editNuevoDescripcion;
-    private static EditText editNuevoMarca;
-    private static EditText editNuevoModelo;
-    private static EditText editNuevoPrecio;
-    private static EditText editNuevoPeso;
+    private EditText editNuevoNombre;
+    private EditText editNuevoDescripcion;
+    private EditText editNuevoMarca;
+    private EditText editNuevoModelo;
+    private EditText editNuevoPrecio;
+    private EditText editNuevoPeso;
+    private Spinner spinnerNuevoCategorias;
+
+    // Botones
     private ImageButton botonNuevoAnyadirFoto;
     private Button botonNuevoPublicar;
+
     private LinearLayout layoutFotos;
     public static final int REQUEST_CODE = 1234;
+
     private final static String STORAGE_PATH = "productos/";
-    private static Intent fotosGaleria;
 
     private static FirebaseUtils firebaseUtils;
+    private ArrayList<Uri> listaUris;
+    private ArrayList<Uri> listaUrisLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +73,16 @@ public class ActivityNuevo extends AppCompatActivity {
         editNuevoModelo = findViewById(R.id.editNuevoModelo);
         editNuevoPrecio = findViewById(R.id.editNuevoPrecio);
         editNuevoPeso = findViewById(R.id.editNuevoPeso);
+        spinnerNuevoCategorias = findViewById(R.id.spinnerNuevoCategorias);
         botonNuevoAnyadirFoto = findViewById(R.id.botonNuevoAnyadirFoto);
         //botonNuevoGuardarBorrador = findViewById(R.id.botonNuevoGuardarBorrador);
         botonNuevoPublicar = findViewById(R.id.botonNuevoPublicar);
         layoutFotos = findViewById(R.id.layoutFotos);
 
         firebaseUtils = new FirebaseUtils(ActivityNuevo.this);
+
+        listaUris = new ArrayList<Uri>();
+        listaUrisLayout = new ArrayList<Uri>();
 
         botonNuevoPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,9 +108,9 @@ public class ActivityNuevo extends AppCompatActivity {
     public boolean isDatosValidos(){
         String nombre = editNuevoNombre.getText().toString().trim();
         String descripcion = editNuevoDescripcion.getText().toString().trim();
-        String precio = editNuevoPrecio.getText().toString();
-        //String categoria;
-        if(nombre.isEmpty() || descripcion.isEmpty() || precio.isEmpty()) {
+        String precio = editNuevoPrecio.getText().toString().trim();
+        String categoria = spinnerNuevoCategorias.getSelectedItem().toString();
+        if(nombre.isEmpty() || descripcion.isEmpty() || precio.isEmpty() || categoria.equals("Selecciona")) {
             return false;
         }
         return true;
@@ -107,7 +118,7 @@ public class ActivityNuevo extends AppCompatActivity {
 
     protected void anyadirProducto(){
         // Se suben las imagenes al Storage
-        firebaseUtils.subirImagenes(fotosGaleria);
+        firebaseUtils.subirImagenes(listaUris);
         // Obtenemos el producto a partir de los datos facilitados por el usuario
         Producto p = getProducto();
         // Subimos el producto a la base de datos
@@ -125,22 +136,14 @@ public class ActivityNuevo extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent,"Selecciona alguna imagen"), REQUEST_CODE);
     }
 
-    // Metodo que recibe la imagen de la galeria y la inserta en el layout
     protected void onActivityResult ( int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             try {
-                fotosGaleria = data;
-                if (data.getClipData() != null) {
-                    // Nos guardamos las imagenes que vamos a subir
-                    //fotosGaleria = data;
-                    // Insertamos las imagenes en el layout
-                    anyadirImagenesLayout();
-                }
-                else if (data.getData() != null) {
-                    Toast.makeText(ActivityNuevo.this, "Selected Single File", Toast.LENGTH_SHORT).show();
-                }
+                actualizarListaUris(data);
+                // Insertamos las imagenes en el layout
+                anyadirImagenesLayout();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -148,60 +151,78 @@ public class ActivityNuevo extends AppCompatActivity {
         }
     }
 
-    // Metodo que anyade una imagen en el layout
-    private void anyadirImagenesLayout() {
-        int totalItemsSeleccionados = fotosGaleria.getClipData().getItemCount();
-        Bitmap bitmap;
+    private void actualizarListaUris(Intent fotosGaleria){
         Uri uri;
-        ImageView image;
-        try {
+        // Comprobamos cuantas fotos se han seleccionado en la galeria
+        if (fotosGaleria.getData() != null) {
+            uri = fotosGaleria.getData();
+            listaUris.add(uri);
+        }
+        else {
+            int totalItemsSeleccionados = fotosGaleria.getClipData().getItemCount();
             for (int i = 0; i < totalItemsSeleccionados; i++) {
                 uri = fotosGaleria.getClipData().getItemAt(i).getUri();
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                image = new ImageView(ActivityNuevo.this);
-                // Ajustamos la dimension
-                image.setLayoutParams(new ViewGroup.LayoutParams(250, 250));
-                // Se asigna el contenido a la imagen
-                image.setImageBitmap(bitmap);
-                // Lo anyadimos al layout
-                layoutFotos.addView(image);
+                listaUris.add(uri);
             }
         }
-        catch (Exception e){
+    }
+
+    private void anyadirImagenesLayout() {
+        for (Uri uri : listaUris) {
+            // Comprobamos que la foto no este ya insertada
+            if (!listaUrisLayout.contains(uri)){
+                listaUrisLayout.add(uri);
+                incrustarImagen(uri);
+            }
+        }
+    }
+
+    // Metodo que anyade una imagen en el layout
+    private void incrustarImagen(Uri uri){
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            ImageView image = new ImageView(ActivityNuevo.this);
+            // Ajustamos la dimension
+            image.setLayoutParams(new ViewGroup.LayoutParams(250, 250));
+            // Se asigna el contenido a la imagen
+            image.setImageBitmap(bitmap);
+            // Lo anyadimos al layout
+            layoutFotos.addView(image);
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     // Metodo que recoje los datos de los imput y retorna el producto
     private Producto getProducto () {
-        String nombre = editNuevoNombre.getText().toString();
-        String descripcion = editNuevoDescripcion.getText().toString();
-        String marca = editNuevoMarca.getText().toString();
-        String modelo = editNuevoModelo.getText().toString();
+        String nombre = editNuevoNombre.getText().toString().trim();
+        String descripcion = editNuevoDescripcion.getText().toString().trim();
+        String marca = editNuevoMarca.getText().toString().trim();
+        String modelo = editNuevoModelo.getText().toString().trim();
         double precio = Double.parseDouble(editNuevoPrecio.getText().toString());
-        double peso = Double.parseDouble(editNuevoPeso.getText().toString());
-        return new Producto(nombre, descripcion, marca, modelo, precio, peso, getFileNameList());
+        String categoria = spinnerNuevoCategorias.getSelectedItem().toString();
+        // Comprobaciones de campos no obligatorios
+        double peso = (editNuevoPeso.getText().toString().isEmpty()) ?
+                -1 : Double.parseDouble(editNuevoPeso.getText().toString());
+
+        if (marca.isEmpty()) {
+            marca = null;
+        }
+        if (modelo.isEmpty()) {
+            modelo = null;
+        }
+
+        return new Producto(nombre, descripcion, marca, modelo, precio, peso, categoria, getFileNameList());
     }
 
-    // Metodo que retorna el nombre de un archivo a partir de una uri
-
+    // Metodo que retorna los nombres de las fotos para la creacion del producto
     private ArrayList<String> getFileNameList(){
         ArrayList<String> listaNombres = new ArrayList<String>();
-        Uri uri;
-        // Se comprueba si se ha seleccionado mas de una foto
-        if(fotosGaleria.getClipData() == null) {
-            uri = fotosGaleria.getData();
+
+        for (Uri uri : listaUris) {
             listaNombres.add(firebaseUtils.getFileName(uri));
         }
-        else {
-            int totalItemsSeleccionados = fotosGaleria.getClipData().getItemCount();
-            for (int i = 0; i < totalItemsSeleccionados; i++) {
-                uri = fotosGaleria.getClipData().getItemAt(i).getUri();
-                listaNombres.add(firebaseUtils.getFileName(uri));
-            }
-        }
-
-
         return listaNombres;
     }
 }

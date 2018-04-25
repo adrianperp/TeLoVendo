@@ -92,7 +92,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spinnerNuevoCategorias"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"

@@ -99,69 +99,54 @@ public class FirebaseUtils {
         db.child(key).setValue(p);
     }
 
-    public void subirImagenes(Intent data){
+    public void subirImagenes(ArrayList<Uri> listaUris){
+        // Obteniendo la ruta donde iran las imagenes
         String dir = STORAGE_PATH + ActivityMain.user.getEmail();
-        ArrayList<Uri> listaUris = getUris(data);
         final int total = listaUris.size();
         System.out.println(">>>>>>>>>>>>>>>total uris" + " hay " + total + " uris");
         final ArrayList<String> fileDoneList = new ArrayList<String>();
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setTitle("Subiendo imagen");
-        dialog.show();
-        System.out.println(">>>>>>>>>>>>>>>dialogo" + "se muestra dialogo");
-        for (Uri uri : listaUris) {
-            System.out.println(">>>>>>>>>>>>>>>uri num " + listaUris.indexOf(uri)+ " " + uri.toString());
-            final String nombreArchivo = getFileName(uri);
-            System.out.println(">>>>>>>>>>>>>>>nombre archivo" + nombreArchivo);
-            // Referencia de almacenamiento
-            StorageReference mStorage = FirebaseStorage.getInstance().getReference();
-            System.out.println(">>>>>>>>>>>>>>>storage reference" + "creando referencia de almacenamiento");
-            // ruta / nombre del archivo
-            StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
-            System.out.println(">>>>>>>>>>>>>>>filetoupload" + "indicando donde se subira el archivo");
-            fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    fileDoneList.add(nombreArchivo);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "La subida de imágenes no se ha podido completar", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    int totalRestantes = total - fileDoneList.size();
-                    dialog.setMessage("Subiendo fotos: " + totalRestantes + " restantes");
-                }
-            });
-        }
-        //dialog.dismiss();
-    }
 
-    // Retorna las uris desde la galeria
-    public ArrayList<Uri> getUris(Intent data) {
-        Uri uri;
-        ArrayList<Uri> listaUris = new ArrayList<Uri>();
+        try {
+            // Progress dialog
+            final ProgressDialog dialog = new ProgressDialog(context);
+            dialog.setTitle("Subiendo imagen");
+            dialog.show();
+            System.out.println(">>>>>>>>>>>>>>>dialogo" + "se muestra dialogo");
 
-        if (data.getData() != null) {
-            System.out.println(">>>>>>>>>>>>>>>data.getdata" + " es una unica imagen");
-            uri = data.getData();
-            listaUris.add(uri);
-        } else if (data.getClipData() != null) {
-            System.out.println(">>>>>>>>>>>>>>>data.getdata" + " son mas de dos imagenes");
-
-            ClipData clipData = data.getClipData();
-            ClipData.Item item;
-            System.out.println(">>>>>>>>>>>>>>>clipdata" + " agarra el clipdata");
-            for (int i = 0; i < clipData.getItemCount(); i++) {
-                item = clipData.getItemAt(i);
-                uri = item.getUri();
-                listaUris.add(uri);
+            for (Uri uri : listaUris) {
+                System.out.println(">>>>>>>>>>>>>>>uri num " + listaUris.indexOf(uri) + " " + uri.toString());
+                final String nombreArchivo = getFileName(uri);
+                System.out.println(">>>>>>>>>>>>>>>nombre archivo" + nombreArchivo);
+                // Referencia de almacenamiento
+                StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+                System.out.println(">>>>>>>>>>>>>>>storage reference" + "creando referencia de almacenamiento");
+                // ruta / nombre del archivo
+                StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
+                System.out.println(">>>>>>>>>>>>>>>filetoupload" + "indicando donde se subira el archivo");
+                fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        fileDoneList.add(nombreArchivo);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "La subida de imágenes no se ha podido completar", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        int totalRestantes = total - fileDoneList.size();
+                        dialog.setMessage("Subiendo fotos: " + totalRestantes + " restantes");
+                    }
+                });
             }
+            dialog.dismiss();
         }
-        return listaUris;
+        catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Ha ocurrido una excepción", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public String getFileName(Uri uri) {
