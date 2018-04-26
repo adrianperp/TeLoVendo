@@ -14,10 +14,6 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-/**
- * Created by PegasusPC on 31/03/2018.
- */
-
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

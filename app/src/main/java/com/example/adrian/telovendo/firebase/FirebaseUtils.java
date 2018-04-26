@@ -16,6 +16,7 @@ import com.example.adrian.telovendo.activities.ActivityMain;
 import com.example.adrian.telovendo.activities.ActivityNuevo;
 import com.example.adrian.telovendo.clases.Producto;
 import com.example.adrian.telovendo.clases.Usuario;
+import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -48,13 +49,13 @@ public class FirebaseUtils {
 
     // Productos
     private final static String NODO_PRODUCTOS = "productos";
-    private final static String CAMPO_ID_PRODUCTO = "id";
     private final static String CAMPO_NOMBRE_PRODUCTO = "nombre";
     private final static String CAMPO_DESCRIPCION_PRODUCTO = "descripcion";
     private final static String CAMPO_MARCA_PRODUCTO = "marca";
     private final static String CAMPO_MODELO_PRODUCTO = "modelo";
     private final static String CAMPO_PRECIO_PRODUCTO = "precio";
     private final static String CAMPO_VALORACION_PRODUCTO = "valoracion";
+
     private final static String STORAGE_PATH = "productos/";
 
     public FirebaseUtils(Context context){
@@ -170,4 +171,29 @@ public class FirebaseUtils {
         }
         return result;
     }
+
+    /*public ArrayList<Producto> getListaProductos(final ProductoAdapter adapter){
+        final ArrayList<Producto> listaProductos = new ArrayList<>();
+        db = FirebaseDatabase.getInstance().getReference(NODO_PRODUCTOS);
+
+        db.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Producto p;
+                for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
+                    // Vamos recogiendo productos
+                    p = datasnap.getValue(Producto.class);
+                    listaProductos.add(p);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return listaProductos;
+    }*/
 }

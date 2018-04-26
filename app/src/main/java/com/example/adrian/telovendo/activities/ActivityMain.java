@@ -45,6 +45,9 @@ public class ActivityMain extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //------------------Lanzamos la activity listar a lo GUARRO------------------
+        startActivity(new Intent(ActivityMain.this, ActivityListarCategoria.class));
+
         // RecyclerView
         listaCategorias = findViewById(R.id.recyclerCategorias);
         listaCategorias.setLayoutManager(new LinearLayoutManager(this));
