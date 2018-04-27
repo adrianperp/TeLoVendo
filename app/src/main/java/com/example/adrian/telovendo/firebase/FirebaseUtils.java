@@ -102,7 +102,7 @@ public class FirebaseUtils {
 
     public void subirImagenes(ArrayList<Uri> listaUris){
         // Obteniendo la ruta donde iran las imagenes
-        String dir = STORAGE_PATH + ActivityMain.user.getEmail();
+        String dir = STORAGE_PATH;
         final int total = listaUris.size();
         System.out.println(">>>>>>>>>>>>>>>total uris" + " hay " + total + " uris");
         final ArrayList<String> fileDoneList = new ArrayList<String>();

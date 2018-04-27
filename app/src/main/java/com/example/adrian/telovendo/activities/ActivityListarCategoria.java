@@ -1,5 +1,6 @@
 package com.example.adrian.telovendo.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,17 +32,17 @@ public class ActivityListarCategoria extends AppCompatActivity {
     Producto p;
     DatabaseReference ref;
     FirebaseUtils firebaseUtils;
-    private Button button;
     public List<Producto> listaProductos;
-
+    public static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_categoria);
 
-        button = findViewById(R.id.button);
         listaProductos = new ArrayList<Producto>();
         firebaseUtils = new FirebaseUtils(ActivityListarCategoria.this);
+
+        context = ActivityListarCategoria.this;
 
         // Adaptador
         productoAdapter = new ProductoAdapter(listaProductos);
@@ -66,13 +67,6 @@ public class ActivityListarCategoria extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ActivityListarCategoria.this, "TAMAÑO LISTA: " + listaProductos.size(), Toast.LENGTH_SHORT).show();
             }
         });
 
