@@ -32,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class FirebaseUtils {
 
@@ -115,12 +116,9 @@ public class FirebaseUtils {
             System.out.println(">>>>>>>>>>>>>>>dialogo" + "se muestra dialogo");
 
             for (Uri uri : listaUris) {
-                System.out.println(">>>>>>>>>>>>>>>uri num " + listaUris.indexOf(uri) + " " + uri.toString());
-                final String nombreArchivo = getFileName(uri);
-                System.out.println(">>>>>>>>>>>>>>>nombre archivo" + nombreArchivo);
+                final String nombreArchivo = UUID.randomUUID().toString();
                 // Referencia de almacenamiento
                 StorageReference mStorage = FirebaseStorage.getInstance().getReference();
-                System.out.println(">>>>>>>>>>>>>>>storage reference" + "creando referencia de almacenamiento");
                 // ruta / nombre del archivo
                 StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
                 System.out.println(">>>>>>>>>>>>>>>filetoupload" + "indicando donde se subira el archivo");

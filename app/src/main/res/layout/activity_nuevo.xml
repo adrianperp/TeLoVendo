@@ -40,6 +40,18 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/editNuevoDescripcion"
                     android:inputType="textMultiLine" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/editNuevoPrecio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/editNuevoPrecio"
+                        android:inputType="numberDecimal" />
+                </android.support.design.widget.TextInputLayout>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -64,18 +76,6 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/editNuevoModelo"
                     android:inputType="textPersonName" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/editNuevoPrecio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/editNuevoPrecio"
-                    android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -126,23 +126,6 @@
 
 
             </HorizontalScrollView>
-
-
-            <Button
-                android:id="@+id/botonNuevoGuardarBorrador"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/botonNuevoGuardarBorrador"
-                style="@style/estiloBoton"
-                android:background="@color/vainilla"/>
-
-            <Button
-                android:id="@+id/botonNuevoPublicar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/botonNuevoPublicar"
-                style="@style/estiloBoton"
-                android:background="@color/azulClaro"/>
 
 
         </LinearLayout>

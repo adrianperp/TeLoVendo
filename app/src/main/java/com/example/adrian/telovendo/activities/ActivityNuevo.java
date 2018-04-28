@@ -11,6 +11,8 @@ import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -50,7 +52,6 @@ public class ActivityNuevo extends AppCompatActivity {
 
     // Botones
     private ImageButton botonNuevoAnyadirFoto;
-    private Button botonNuevoPublicar;
 
     private LinearLayout layoutFotos;
     public static final int REQUEST_CODE = 1234;
@@ -75,8 +76,6 @@ public class ActivityNuevo extends AppCompatActivity {
         editNuevoPeso = findViewById(R.id.editNuevoPeso);
         spinnerNuevoCategorias = findViewById(R.id.spinnerNuevoCategorias);
         botonNuevoAnyadirFoto = findViewById(R.id.botonNuevoAnyadirFoto);
-        //botonNuevoGuardarBorrador = findViewById(R.id.botonNuevoGuardarBorrador);
-        botonNuevoPublicar = findViewById(R.id.botonNuevoPublicar);
         layoutFotos = findViewById(R.id.layoutFotos);
 
         firebaseUtils = new FirebaseUtils(ActivityNuevo.this);
@@ -84,7 +83,7 @@ public class ActivityNuevo extends AppCompatActivity {
         listaUris = new ArrayList<Uri>();
         listaUrisLayout = new ArrayList<Uri>();
 
-        botonNuevoPublicar.setOnClickListener(new View.OnClickListener() {
+        /*botonNuevoPublicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Comprobar que se hayan introducido datos antes de anyadir producto
@@ -95,7 +94,7 @@ public class ActivityNuevo extends AppCompatActivity {
                     Toast.makeText(ActivityNuevo.this, "Algunos campos obligatorios están vacíos", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });*/
 
         botonNuevoAnyadirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +102,33 @@ public class ActivityNuevo extends AppCompatActivity {
                 elegirImagen();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflamos el menu
+        getMenuInflater().inflate(R.menu.activity_nuevo, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_publicar:
+                // Comprobar que se hayan introducido datos antes de anyadir producto
+                if(isDatosValidos()) {
+                    anyadirProducto();
+                }
+                else {
+                    Toast.makeText(ActivityNuevo.this, "Algunos campos obligatorios están vacíos", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public boolean isDatosValidos(){

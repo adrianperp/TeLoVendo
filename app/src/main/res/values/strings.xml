@@ -18,11 +18,11 @@
     <string name="drawer_perfil">Mi cuenta</string>
 
     <!-- Activity Nuevo -->
-    <string name="editNuevoNombre">Nombre</string>
-    <string name="editNuevoDescripcion">Descripción</string>
+    <string name="editNuevoNombre">Nombre*</string>
+    <string name="editNuevoDescripcion">Descripción*</string>
     <string name="editNuevoMarca">Marca</string>
     <string name="editNuevoModelo">Modelo</string>
-    <string name="editNuevoPrecio">Precio</string>
+    <string name="editNuevoPrecio">Precio*</string>
     <string name="editNuevoPeso">Peso</string>
     <string name="botonNuevoGuardarBorrador">Guardar borrador</string>
     <string name="botonNuevoPublicar">Publicar</string>
@@ -60,6 +60,7 @@
 
     <!-- Ruta de imagenes de productos del storage -->
     <string name="ruta">productos/</string>
+    <string name="action_publicar">Publicar</string>
 
 
 </resources>

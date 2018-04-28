@@ -84,10 +84,15 @@ public class ActivityMain extends AppCompatActivity
 
     // rellenar lista de categorias
     public List<Categoria> obtenerCategorias(){
+        int[] idsFotos = {0, R.drawable.cat_motor, R.drawable.cat_hogar, R.drawable.cat_electronica,
+                R.drawable.cat_juegos, R.drawable.cat_hobbies, R.drawable.cat_ropa, R.drawable.cat_libros,
+                R.drawable.cat_infantil, R.drawable.cat_animales, R.drawable.cat_electrodomesticos};
         List<Categoria> listaCategorias = new ArrayList<Categoria>();
         String[] arrayCat = getResources().getStringArray(R.array.array_categorias);
-        for (int i = 0; i < arrayCat.length; i++)   {
-            listaCategorias.add(new Categoria(arrayCat[i],R.drawable.avatar));
+
+        // Se descarta la primera opcion (Selecciona)
+        for (int i = 1; i < arrayCat.length; i++)   {
+            listaCategorias.add(new Categoria(arrayCat[i],idsFotos[i]));
         }
         return listaCategorias;
     }
