@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context="com.example.adrian.telovendo.activities.ActivityMain">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        android:background="@color/azulClaro"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></android.support.v7.widget.Toolbar>
+    
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerCategorias"
         android:layout_marginTop="60dp"

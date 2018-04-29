@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Categoria;
 import com.example.adrian.telovendo.clases.Usuario;
+import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
 import com.example.adrian.telovendo.recyclerview.RecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -39,14 +40,12 @@ public class ActivityMain extends AppCompatActivity
     private Button botonPerfil;
     private RecyclerView listaCategorias;
     private RecyclerViewAdapter adaptadorCategorias;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //------------------Lanzamos la activity listar a lo GUARRO------------------
-        startActivity(new Intent(ActivityMain.this, ActivityListarCategoria.class));
 
         // RecyclerView
         listaCategorias = findViewById(R.id.recyclerCategorias);
@@ -56,8 +55,10 @@ public class ActivityMain extends AppCompatActivity
         listaCategorias.setAdapter(adaptadorCategorias);
 
         // Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Categorías");
 
         // Boton flotante
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -80,6 +81,16 @@ public class ActivityMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Respuesta al pulsar sobre algun elemento de la lista
+        adaptadorCategorias.setOnItemListener(new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Categoria c, int position) {
+                Intent activityDetalles = new Intent(ActivityMain.this, ActivityListarCategoria.class);
+                activityDetalles.putExtra("categoria", c.getNombre());
+                startActivity(activityDetalles);
+            }
+        });
     }
 
     // rellenar lista de categorias

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Categoria;
+import com.example.adrian.telovendo.clases.Producto;
 
 import org.w3c.dom.Text;
 
@@ -37,7 +38,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_categoria, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        final ViewHolder viewHolder = new ViewHolder(view);
+
+        // Implementamos el OnClickListener
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = viewHolder.getAdapterPosition();
+                if(mListener!=null) {
+                    mListener.onItemClick(listaCategorias.get(position), position);
+                }
+            }
+        });
         return viewHolder;
     }
 
@@ -50,5 +62,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return listaCategorias.size();
+    }
+
+    // Listener para la lista
+    public interface OnItemClickListener {
+        public void onItemClick(Categoria c, int position);
+    }
+    private OnItemClickListener mListener;
+
+    public void setOnItemListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 }

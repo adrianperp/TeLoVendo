@@ -12,12 +12,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.adrian.telovendo.R;
-import com.example.adrian.telovendo.firebase.FirebaseUtils;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ActivityLogin extends AppCompatActivity {
 

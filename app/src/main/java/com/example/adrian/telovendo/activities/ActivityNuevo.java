@@ -1,44 +1,30 @@
 package com.example.adrian.telovendo.activities;
 
-
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Producto;
-import com.example.adrian.telovendo.firebase.FirebaseUtils;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.example.adrian.telovendo.utilidades.FechasUtils;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class ActivityNuevo extends AppCompatActivity {
 
@@ -49,18 +35,17 @@ public class ActivityNuevo extends AppCompatActivity {
     private EditText editNuevoPrecio;
     private EditText editNuevoPeso;
     private Spinner spinnerNuevoCategorias;
-
-    // Botones
     private ImageButton botonNuevoAnyadirFoto;
-
     private LinearLayout layoutFotos;
-    public static final int REQUEST_CODE = 1234;
 
+    public static final int REQUEST_CODE = 1234;
     private final static String STORAGE_PATH = "productos/";
 
     private static FirebaseUtils firebaseUtils;
     private ArrayList<Uri> listaUris;
     private ArrayList<Uri> listaUrisLayout;
+
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,23 +63,11 @@ public class ActivityNuevo extends AppCompatActivity {
         botonNuevoAnyadirFoto = findViewById(R.id.botonNuevoAnyadirFoto);
         layoutFotos = findViewById(R.id.layoutFotos);
 
+        context = ActivityNuevo.this;
         firebaseUtils = new FirebaseUtils(ActivityNuevo.this);
 
         listaUris = new ArrayList<Uri>();
         listaUrisLayout = new ArrayList<Uri>();
-
-        /*botonNuevoPublicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Comprobar que se hayan introducido datos antes de anyadir producto
-                if(isDatosValidos()) {
-                    anyadirProducto();
-                }
-                else {
-                    Toast.makeText(ActivityNuevo.this, "Algunos campos obligatorios están vacíos", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });*/
 
         botonNuevoAnyadirFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +104,7 @@ public class ActivityNuevo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Comprueba que los datos hayan sido introducidos correctamente
     public boolean isDatosValidos(){
         String nombre = editNuevoNombre.getText().toString().trim();
         String descripcion = editNuevoDescripcion.getText().toString().trim();
@@ -142,11 +116,14 @@ public class ActivityNuevo extends AppCompatActivity {
         return true;
     }
 
+    // Sube el producto a la base de datos
     protected void anyadirProducto(){
-        // Se suben las imagenes al Storage
-        firebaseUtils.subirImagenes(listaUris);
         // Obtenemos el producto a partir de los datos facilitados por el usuario
         Producto p = getProducto();
+        p.setFechaPublicado(FechasUtils.getFechaActual());
+        p.setHoraPublicado(FechasUtils.getHoraActual());
+        // Se suben las imagenes al Storage
+        firebaseUtils.subirImagenes(listaUris, p.getFotos());
         // Subimos el producto a la base de datos
         firebaseUtils.subirProducto(p);
         Toast.makeText(this, "Producto subido", Toast.LENGTH_SHORT).show();
@@ -177,6 +154,7 @@ public class ActivityNuevo extends AppCompatActivity {
         }
     }
 
+    // Inserta uris cada vez que se anyade una foto nueva
     private void actualizarListaUris(Intent fotosGaleria){
         Uri uri;
         // Comprobamos cuantas fotos se han seleccionado en la galeria
@@ -193,6 +171,7 @@ public class ActivityNuevo extends AppCompatActivity {
         }
     }
 
+    // Inserta las imagenes en forma de vista en el layout
     private void anyadirImagenesLayout() {
         for (Uri uri : listaUris) {
             // Comprobamos que la foto no este ya insertada

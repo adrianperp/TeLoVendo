@@ -1,24 +1,21 @@
 package com.example.adrian.telovendo.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Producto;
-import com.example.adrian.telovendo.firebase.FirebaseUtils;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
 import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -27,20 +24,23 @@ import java.util.List;
 public class ActivityListarCategoria extends AppCompatActivity {
 
     RecyclerView recyclerProductos;
-    RecyclerView.LayoutManager miLayoutManager;
     ProductoAdapter productoAdapter;
+    String categoria;
     Producto p;
     DatabaseReference ref;
-    FirebaseUtils firebaseUtils;
-    public List<Producto> listaProductos;
+    public List<Producto> listaProductos = new ArrayList<Producto>();
+
     public static Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_categoria);
 
-        listaProductos = new ArrayList<Producto>();
-        firebaseUtils = new FirebaseUtils(ActivityListarCategoria.this);
+        // Recibiendo la categoria seleccionada
+        categoria = getIntent().getStringExtra("categoria");
+
+        getSupportActionBar().setTitle(categoria);
 
         context = ActivityListarCategoria.this;
 
@@ -51,14 +51,16 @@ public class ActivityListarCategoria extends AppCompatActivity {
         recyclerProductos.setItemAnimator(new DefaultItemAnimator());
         recyclerProductos.setAdapter(productoAdapter);
 
-        // Cargar datos desde la base de datos
-        ref = FirebaseDatabase.getInstance().getReference("productos");
-        ref.addValueEventListener(new ValueEventListener() {
+        // Realizamos una consulta a la base de datos y recuperamos los productos de una categoria
+        ref = FirebaseDatabase.getInstance().getReference(FirebaseUtils.NODO_PRODUCTOS);
+        Query q = ref.orderByChild(FirebaseUtils.CAMPO_CATEGORIA).equalTo(categoria);
+        q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listaProductos.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    p = ds.getValue(Producto.class);
+                Producto p;
+                // Recuperamos los productos de esa categoria
+                for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
+                    p = datasnap.getValue(Producto.class);
                     listaProductos.add(p);
                 }
                 productoAdapter.notifyDataSetChanged();

@@ -1,19 +1,13 @@
-package com.example.adrian.telovendo.firebase;
+package com.example.adrian.telovendo.utilidades;
 
-import android.app.ProgressDialog;
-import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.ProgressBar;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.example.adrian.telovendo.activities.ActivityMain;
-import com.example.adrian.telovendo.activities.ActivityNuevo;
 import com.example.adrian.telovendo.clases.Producto;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
@@ -42,22 +36,23 @@ public class FirebaseUtils {
     private static StorageReference ref;
 
     // Usuarios
-    private final static String NODO_USUARIOS = "usuarios";
-    private final static String CAMPO_NOMBRE = "nombre";
-    private final static String CAMPO_APELLIDOS = "apellidos";
-    private final static String CAMPO_EMAIL = "email";
+    public final static String NODO_USUARIOS = "usuarios";
+    public final static String CAMPO_NOMBRE = "nombre";
+    public final static String CAMPO_APELLIDOS = "apellidos";
+    public final static String CAMPO_EMAIL = "email";
 
 
     // Productos
-    private final static String NODO_PRODUCTOS = "productos";
-    private final static String CAMPO_NOMBRE_PRODUCTO = "nombre";
-    private final static String CAMPO_DESCRIPCION_PRODUCTO = "descripcion";
-    private final static String CAMPO_MARCA_PRODUCTO = "marca";
-    private final static String CAMPO_MODELO_PRODUCTO = "modelo";
-    private final static String CAMPO_PRECIO_PRODUCTO = "precio";
-    private final static String CAMPO_VALORACION_PRODUCTO = "valoracion";
+    public final static String NODO_PRODUCTOS = "productos";
+    public final static String CAMPO_NOMBRE_PRODUCTO = "nombre";
+    public final static String CAMPO_DESCRIPCION_PRODUCTO = "descripcion";
+    public final static String CAMPO_CATEGORIA = "categoria";
+    public final static String CAMPO_MARCA_PRODUCTO = "marca";
+    public final static String CAMPO_MODELO_PRODUCTO = "modelo";
+    public final static String CAMPO_PRECIO_PRODUCTO = "precio";
+    public final static String CAMPO_VALORACION_PRODUCTO = "valoracion";
 
-    private final static String STORAGE_PATH = "productos/";
+    public final static String STORAGE_PATH = "productos/";
 
     public FirebaseUtils(Context context){
         this.context = context;
@@ -101,46 +96,43 @@ public class FirebaseUtils {
         db.child(key).setValue(p);
     }
 
-    public void subirImagenes(ArrayList<Uri> listaUris){
+    public void subirImagenes(ArrayList<Uri> listaUris, ArrayList<String> listaNombres){
         // Obteniendo la ruta donde iran las imagenes
         String dir = STORAGE_PATH;
         final int total = listaUris.size();
-        System.out.println(">>>>>>>>>>>>>>>total uris" + " hay " + total + " uris");
         final ArrayList<String> fileDoneList = new ArrayList<String>();
 
         try {
-            // Progress dialog
-            final ProgressDialog dialog = new ProgressDialog(context);
-            dialog.setTitle("Subiendo imagen");
-            dialog.show();
-            System.out.println(">>>>>>>>>>>>>>>dialogo" + "se muestra dialogo");
+            Uri uri;
+            for (int i = 0 ; i < total; i++){
+                uri = listaUris.get(i);
+                final String nombreArchivo = listaNombres.get(i);
 
-            for (Uri uri : listaUris) {
-                final String nombreArchivo = UUID.randomUUID().toString();
                 // Referencia de almacenamiento
                 StorageReference mStorage = FirebaseStorage.getInstance().getReference();
-                // ruta / nombre del archivo
                 StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
-                System.out.println(">>>>>>>>>>>>>>>filetoupload" + "indicando donde se subira el archivo");
+
                 fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         fileDoneList.add(nombreArchivo);
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+
                         Toast.makeText(context, "La subida de imágenes no se ha podido completar", Toast.LENGTH_SHORT).show();
+
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        int totalRestantes = total - fileDoneList.size();
-                        dialog.setMessage("Subiendo fotos: " + totalRestantes + " restantes");
+                        /*int totalRestantes = total - fileDoneList.size();
+                        dialog.setMessage("Subiendo fotos: " + totalRestantes + " restantes");*/
                     }
                 });
             }
-            dialog.dismiss();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -148,38 +140,18 @@ public class FirebaseUtils {
         }
     }
 
-    public String getFileName(Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
+    public ArrayList<Producto> getListaProductos(String categoria, final ProductoAdapter adapter){
+        final ArrayList listaProductos = new ArrayList<Producto>();
 
-    /*public ArrayList<Producto> getListaProductos(final ProductoAdapter adapter){
-        final ArrayList<Producto> listaProductos = new ArrayList<>();
+        System.out.println(">>>>>>>>>>>>>>>>>Entra en getListaProductos");
         db = FirebaseDatabase.getInstance().getReference(NODO_PRODUCTOS);
-
-        db.addValueEventListener(new ValueEventListener() {
+        Query q = db.orderByChild(CAMPO_CATEGORIA).equalTo(categoria);
+        q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Producto p;
+                // Recuperamos los productos de esa categoria
                 for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
-                    // Vamos recogiendo productos
                     p = datasnap.getValue(Producto.class);
                     listaProductos.add(p);
                 }
@@ -191,7 +163,17 @@ public class FirebaseUtils {
 
             }
         });
-
         return listaProductos;
-    }*/
+    }
+
+    // Retorna un nombre aleatorio junto a la extension de la imagen
+    public String getFileName(Uri uri) {
+        return UUID.randomUUID().toString() + "." + getImageExt(uri);
+    }
+
+    public String getImageExt(Uri uri){
+        ContentResolver contentResolver = context.getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
 }
