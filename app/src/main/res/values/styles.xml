@@ -34,6 +34,12 @@
     </style>
 
     <!-- Rating bar -->
+    <style name="myRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/my_ratingbar</item>
+        <item name="android:minHeight">15px</item>
+        <item name="android:maxHeight">20dip</item>
+    </style>
+
     <style name="ratingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/azulClaro</item>
         <item name="colorControlActivated">@color/blue</item>

@@ -38,10 +38,22 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         }
 
         public void bind(Producto p) {
-            System.out.println(">>>>Entra en el bind<<<<");
-            textNombreLista.setText(p.getNombre().toString());
-            textDescripcionLista.setText(p.getDescripcion().toString());
-            textPrecioLista.setText(String.valueOf(p.getPrecio()));
+            // Comprobar que el texto no se exceda del maximo
+            String nombre = p.getNombre();
+            String descripcion = p.getDescripcion();
+            if (nombre.length() > 15) { // 15 carac
+                textNombreLista.setText(nombre.substring(0,15) + "...");
+            }
+            else {
+                textNombreLista.setText(nombre);
+            }
+            if (descripcion.length() > 160) {// 160 carac
+                textDescripcionLista.setText(descripcion.substring(0, 160) + "...");
+            }
+            else {
+                textDescripcionLista.setText(descripcion);
+            }
+            textPrecioLista.setText(String.valueOf(p.getPrecio()) + " €");
             // Asiganmos la foto al item
             StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(STORAGE_PATH + p.getFotos().get(0));
             Glide.with(ActivityListarCategoria.context)

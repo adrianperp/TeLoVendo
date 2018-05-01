@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="180dp"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <ImageView
@@ -16,26 +17,67 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/textNombreItem"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre producto"
-            android:textSize="24sp" />
+            android:layout_marginBottom="5dp"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textNombreItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="Nombre producto"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textFechaPublicacionItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="1d" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/textDescripcionItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Esta es la descripción del procucto" />
+            android:layout_marginBottom="5dp"
+            android:text="Esta es la descripción del procucto en la que se habla de lo que se vende y las características. También se intenta añadir la máxima información que sea posible" />
 
-        <TextView
-            android:id="@+id/textPrecioItem"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom|right"
-            android:text="50 €"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <RatingBar
+                style="@style/myRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="4dp"
+                android:numStars="5"
+                android:rating="3.5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="(6)" />
+
+            <TextView
+                android:id="@+id/textPrecioItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="bottom|right"
+                android:text="50 €"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
