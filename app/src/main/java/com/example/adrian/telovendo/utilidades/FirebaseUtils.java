@@ -36,23 +36,23 @@ public class FirebaseUtils {
     private static StorageReference ref;
 
     // Usuarios
-    public final static String NODO_USUARIOS = "usuarios";
-    public final static String CAMPO_NOMBRE = "nombre";
-    public final static String CAMPO_APELLIDOS = "apellidos";
-    public final static String CAMPO_EMAIL = "email";
-
+    public final String NODO_USUARIOS = "usuarios";
+    public final String CAMPO_NOMBRE = "nombre";
+    public final String CAMPO_APELLIDOS = "apellidos";
+    public final String CAMPO_EMAIL = "email";
 
     // Productos
-    public final static String NODO_PRODUCTOS = "productos";
-    public final static String CAMPO_NOMBRE_PRODUCTO = "nombre";
-    public final static String CAMPO_DESCRIPCION_PRODUCTO = "descripcion";
-    public final static String CAMPO_CATEGORIA = "categoria";
-    public final static String CAMPO_MARCA_PRODUCTO = "marca";
-    public final static String CAMPO_MODELO_PRODUCTO = "modelo";
-    public final static String CAMPO_PRECIO_PRODUCTO = "precio";
-    public final static String CAMPO_VALORACION_PRODUCTO = "valoracion";
+    public final String NODO_PRODUCTOS = "productos";
+    public final String CAMPO_NOMBRE_PRODUCTO = "nombre";
+    public final String CAMPO_DESCRIPCION_PRODUCTO = "descripcion";
+    public final String CAMPO_MARCA_PRODUCTO = "marca";
+    public final String CAMPO_MODELO_PRODUCTO = "modelo";
+    public final String CAMPO_PRECIO_PRODUCTO = "precio";
+    public final String CAMPO_CATEGORIA = "categoria";
+    public final String CAMPO_VALORACION_PRODUCTO = "valoracion";
 
-    public final static String STORAGE_PATH = "productos/";
+    public final String STORAGE_PATH_PRODUCTOS = "productos/";
+    public final String STORAGE_PATH_USUARIOS = "usuarios/";
 
     public FirebaseUtils(Context context){
         this.context = context;
@@ -96,9 +96,32 @@ public class FirebaseUtils {
         db.child(key).setValue(p);
     }
 
-    public void subirImagenes(ArrayList<Uri> listaUris, ArrayList<String> listaNombres){
+    public void actualizarUsuario(Usuario u) {
+
+    }
+
+    public void subirImagenUsuario(Uri uri){
+        String dir = STORAGE_PATH_USUARIOS;
+        final String nombreArchivo = getFileName(uri);
+        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+        StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
+
+        fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "La subida de imágenes no se ha podido completar", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void subirImagenesProductos(ArrayList<Uri> listaUris, ArrayList<String> listaNombres){
         // Obteniendo la ruta donde iran las imagenes
-        String dir = STORAGE_PATH;
+        String dir = STORAGE_PATH_PRODUCTOS;
         final int total = listaUris.size();
         final ArrayList<String> fileDoneList = new ArrayList<String>();
 

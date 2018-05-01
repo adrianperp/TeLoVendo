@@ -28,6 +28,7 @@ public class ActivityListarCategoria extends AppCompatActivity {
     String categoria;
     Producto p;
     DatabaseReference ref;
+    FirebaseUtils firebaseUtils;
     public List<Producto> listaProductos = new ArrayList<Producto>();
 
     public static Context context;
@@ -44,6 +45,8 @@ public class ActivityListarCategoria extends AppCompatActivity {
 
         context = ActivityListarCategoria.this;
 
+        firebaseUtils = new FirebaseUtils(ActivityListarCategoria.this);
+
         // Adaptador
         productoAdapter = new ProductoAdapter(listaProductos);
         recyclerProductos = findViewById(R.id.recyclerProductos);
@@ -52,8 +55,8 @@ public class ActivityListarCategoria extends AppCompatActivity {
         recyclerProductos.setAdapter(productoAdapter);
 
         // Realizamos una consulta a la base de datos y recuperamos los productos de una categoria
-        ref = FirebaseDatabase.getInstance().getReference(FirebaseUtils.NODO_PRODUCTOS);
-        Query q = ref.orderByChild(FirebaseUtils.CAMPO_CATEGORIA).equalTo(categoria);
+        ref = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_PRODUCTOS);
+        Query q = ref.orderByChild(firebaseUtils.CAMPO_CATEGORIA).equalTo(categoria);
         q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

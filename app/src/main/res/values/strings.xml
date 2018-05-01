@@ -61,6 +61,11 @@
     <!-- Ruta de imagenes de productos del storage -->
     <string name="ruta">productos/</string>
     <string name="action_publicar">Publicar</string>
+    <string name="editNombreCuenta">Nombre</string>
+    <string name="editApellidosCuenta">Apellidos</string>
+    <string name="editPaisCuenta">País</string>
+    <string name="editCiudadCuenta">Ciudad</string>
+    <string name="action_cuenta_guardar">Guardar</string>
 
 
 </resources>

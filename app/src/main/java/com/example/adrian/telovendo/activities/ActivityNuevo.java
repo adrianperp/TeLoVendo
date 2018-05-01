@@ -123,7 +123,7 @@ public class ActivityNuevo extends AppCompatActivity {
         p.setFechaPublicado(FechasUtils.getFechaActual());
         p.setHoraPublicado(FechasUtils.getHoraActual());
         // Se suben las imagenes al Storage
-        firebaseUtils.subirImagenes(listaUris, p.getFotos());
+        firebaseUtils.subirImagenesProductos(listaUris, p.getFotos());
         // Subimos el producto a la base de datos
         firebaseUtils.subirProducto(p);
         Toast.makeText(this, "Producto subido", Toast.LENGTH_SHORT).show();

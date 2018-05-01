@@ -23,7 +23,8 @@
         <activity android:name=".activities.ActivityNuevo" />
         <activity android:name=".activities.ActivityRegistro" />
         <activity android:name=".activities.ActivityCuenta" />
-        <activity android:name=".activities.ActivityListarCategoria"></activity>
+        <activity android:name=".activities.ActivityListarCategoria" />
+        <activity android:name=".activities.ActivityCuentaEditar"></activity>
     </application>
 
 </manifest>
