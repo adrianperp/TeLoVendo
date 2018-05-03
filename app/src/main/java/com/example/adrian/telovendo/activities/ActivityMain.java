@@ -28,6 +28,15 @@ import com.example.adrian.telovendo.clases.Categoria;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
 import com.example.adrian.telovendo.recyclerview.RecyclerViewAdapter;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +45,11 @@ import java.util.List;
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static FirebaseUser firebaseUser;
     public static Usuario user;
+    private static FirebaseUtils firebaseUtils;
+
+
     private Button botonPerfil;
     private RecyclerView listaCategorias;
     private RecyclerViewAdapter adaptadorCategorias;
@@ -46,6 +59,12 @@ public class ActivityMain extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firebaseUtils = new FirebaseUtils(ActivityMain.this);
+
+        // Obtenemos el usuario logueado
+        firebaseUser = firebaseUtils.getUsuarioLogueado();
+        user = getMiUsuario(firebaseUser);
 
         // RecyclerView
         listaCategorias = findViewById(R.id.recyclerCategorias);
@@ -91,6 +110,31 @@ public class ActivityMain extends AppCompatActivity
                 startActivity(activityDetalles);
             }
         });
+    }
+
+    public Usuario getMiUsuario(FirebaseUser firebaseUser) {
+        // Obteniendo referencia al usuario
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
+        final String email = firebaseUser.getEmail();
+        final Usuario[] usuario = new Usuario[1];
+
+        Query q = databaseRef.orderByChild(firebaseUtils.CAMPO_EMAIL).equalTo(email);
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                    user = userSnapshot.getValue(Usuario.class);
+
+                    //usuario[0] = userSnapshot.getValue(Usuario.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return usuario[0];
     }
 
     // rellenar lista de categorias

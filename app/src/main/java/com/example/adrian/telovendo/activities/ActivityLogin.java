@@ -96,7 +96,7 @@ public class ActivityLogin extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         progressDialog.dismiss();
                         // Asignamos el usuario logueado
-                        firebaseUtils.buscarUsuarioEmail(email);
+                        //firebaseUtils.buscarUsuarioEmail(email);
                         Intent mainActivity = new Intent(ActivityLogin.this, ActivityMain.class);
                         startActivity(mainActivity);
                     }

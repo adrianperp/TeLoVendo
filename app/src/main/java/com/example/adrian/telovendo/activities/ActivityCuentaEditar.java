@@ -13,18 +13,31 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.adrian.telovendo.R;
+import com.example.adrian.telovendo.clases.Usuario;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.adrian.telovendo.activities.ActivityMain.user;
 
 public class ActivityCuentaEditar extends AppCompatActivity {
 
     private static CircleImageView imagenPerfilEditar;
-    private EditText editNombreCuenta;
-    private EditText editApellidosCuenta;
-    private EditText editPaisCuenta;
-    private EditText editCiudadCuenta;
+    private static EditText editNombreCuenta;
+    private static EditText editApellidosCuenta;
+    private static EditText editPaisCuenta;
+    private static EditText editCiudadCuenta;
+
+    private static FirebaseUtils firebaseUtils;
+    private static Usuario user;
+    private static Uri uri;
+
+    DatabaseReference databaseRef;
 
     public static final int REQUEST_CODE = 1234;
 
@@ -38,6 +51,10 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setTitle("Mi cuenta");
+
+        firebaseUtils = new FirebaseUtils(ActivityCuentaEditar.this);
+
+        user = ActivityMain.user;
 
         // Instanciamos las views
         imagenPerfilEditar = findViewById(R.id.imagenFotoCuentaEditar);
@@ -56,6 +73,70 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         });
     }
 
+    protected void actualizarUsuario() {
+        final Usuario newUser = getUsuario();
+        user = newUser;
+
+        // Se actualiza el usuario en la base de datos
+        databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
+        // Creando query
+        Query q = databaseRef.orderByChild(firebaseUtils.CAMPO_EMAIL).equalTo(newUser.getEmail());
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String clave;
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    clave = ds.getKey();
+                    // Actualizamos el usuario
+                    databaseRef.child(clave).setValue(newUser);
+                    System.out.println(">>>>>>>>>>>USUARIO ACTUALIZADO");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        // Se sube la nueva foto
+        if (uri != null) {
+            firebaseUtils.subirImagenUsuario(newUser.getFotoPerfil(), uri);
+        }
+
+        finish();
+    }
+
+    // Retorna un usuario a partir de la informacion proporcionada por el usuario
+    private static Usuario getUsuario(){
+        System.out.println("----------------entra en get usuario-------------");
+        Usuario u = new Usuario();
+        String email = user.getEmail();
+        String contrasenya = user.getContrasenya();
+        String nombre = editNombreCuenta.getText().toString().trim();
+        String apellidos = editApellidosCuenta.getText().toString().trim();
+        String pais = editPaisCuenta.getText().toString().trim();
+        String ciudad = editCiudadCuenta.getText().toString().trim();
+        String foto = firebaseUtils.getFileName(uri);
+        System.out.println("----------------nombre foto: " + foto + " -------------");
+
+        // Construimos el usuario
+        u.setEmail(email);
+        u.setContrasenya(contrasenya);
+        if (!nombre.isEmpty())
+            u.setNombre(nombre);
+        if (!apellidos.isEmpty())
+            u.setApellidos(apellidos);
+        if (!pais.isEmpty())
+            u.setPais(pais);
+        if (!ciudad.isEmpty())
+            u.setCiudad(ciudad);
+        if (!foto.isEmpty())
+            u.setFotoPerfil(foto);
+        return u;
+    }
+
     protected void elegirImagen() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -68,10 +149,15 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
-            Uri uri = data.getData();
+            uri = data.getData();
+            System.out.println("--------------------uri: " + uri.toString() + "--------------------");
+
             // Se actualiza la imagen del layout
+            System.out.println("--------------------Entra en el onactivityresult--------------------");
+
             imagenPerfilEditar.setImageURI(uri);
-            Toast.makeText(this, "Imagen actualizada", Toast.LENGTH_SHORT).show();
+            System.out.println("--------------------Anyade la imagen en el layout--------------------");
+
         }
     }
 
@@ -120,7 +206,13 @@ public class ActivityCuentaEditar extends AppCompatActivity {
 
         switch (id){
             case R.id.action_cuenta_guardar:
-
+                // Comprobar que se hayan hecho cambios
+                if (cambiosRealizados()) {
+                    actualizarUsuario();
+                    ActivityMain.user = user;
+                    setResult(RESULT_OK, new Intent());
+                }
+                //finish();
                 break;
             case android.R.id.home:
                 // Mostrar un alert de confirmacion
@@ -144,8 +236,10 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         String nuevoApellidos = editApellidosCuenta.getText().toString();
         String nuevoPais = editPaisCuenta.getText().toString();
         String nuevoCiudad = editCiudadCuenta.getText().toString();
+
         if (!nombre.equals(nuevoNombre) || !apellidos.equals(nuevoApellidos)
-                || !pais.equals(nuevoPais) || !ciudad.equals(nuevoCiudad)){
+                || !pais.equals(nuevoPais) || !ciudad.equals(nuevoCiudad) ||
+                uri != null){
             return true;
         }
         return false;

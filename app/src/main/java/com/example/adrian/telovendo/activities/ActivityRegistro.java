@@ -18,7 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.UUID;
+
 public class ActivityRegistro extends AppCompatActivity {
+
+    private static FirebaseUtils firebaseUtils;
 
     private EditText editNombreRegistro;
     private EditText editApellidosRegistro;
@@ -27,7 +31,6 @@ public class ActivityRegistro extends AppCompatActivity {
     private Button botonRegistrarRegistro;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private static FirebaseUtils firebaseUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +93,10 @@ public class ActivityRegistro extends AppCompatActivity {
                             Toast.makeText(ActivityRegistro.this, R.string.toastRegistroCorrecto,
                                     Toast.LENGTH_SHORT).show();
                             // Anyadimos el nuevo usuario a la base de datos
-                            firebaseUtils.anyadirUsuario(new Usuario(nombre, apellidos, email, contrasenya));
-                            firebaseUtils.buscarUsuarioEmail(email);
+                            //String id = UUID.randomUUID().toString();
+                            firebaseUtils.anyadirUsuario(new Usuario(/*id, */nombre, apellidos, email, contrasenya));
+                            // Lo logueamos
+                            //firebaseUtils.buscarUsuarioEmail(email);
                             // Accedemos a la activity main
                             startActivity(new Intent(getApplicationContext(), ActivityMain.class));
                         }

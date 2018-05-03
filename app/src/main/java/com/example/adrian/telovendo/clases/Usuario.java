@@ -2,6 +2,7 @@ package com.example.adrian.telovendo.clases;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by adrian on 4/03/18.
@@ -9,9 +10,15 @@ import java.util.ArrayList;
 
 public class Usuario implements Serializable{
 
-    private String nombre, apellidos, sexo, pais, ciudad, codigoPostal, fotoPerfil;
+    private String nombre;
+    private String apellidos;
+    private String sexo;
+    private String pais;
+    private String ciudad;
+    private String codigoPostal;
+    private String fotoPerfil;
     private String email, contrasenya;
-    private double valoracion;
+    private double valoracion = -1;
     private ArrayList<String> listaBorradores = new ArrayList<String>();
     private ArrayList<String> listaProductos = new ArrayList<String>();
     private ArrayList<String> listaCompras = new ArrayList<String>();
@@ -29,7 +36,8 @@ public class Usuario implements Serializable{
         this.fotoPerfil = fotoPerfil;
     }
 
-    public Usuario(String nombre, String apellidos, String email, String contrasenya){
+    public Usuario(/*String id, */String nombre, String apellidos, String email, String contrasenya){
+        //this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -41,6 +49,15 @@ public class Usuario implements Serializable{
     }
 
     // Getters y setters
+
+    /*public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }*/
+
     public String getNombre() {
         return nombre;
     }
@@ -152,4 +169,6 @@ public class Usuario implements Serializable{
     public void setListaVentas(ArrayList<String> listaVentas) {
         this.listaVentas = listaVentas;
     }
+
+
 }
