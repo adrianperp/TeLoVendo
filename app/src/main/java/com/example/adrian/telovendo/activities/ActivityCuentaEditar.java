@@ -1,6 +1,8 @@
 package com.example.adrian.telovendo.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,15 +14,19 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.utilidades.FirebaseUtils;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,10 +42,11 @@ public class ActivityCuentaEditar extends AppCompatActivity {
     private static FirebaseUtils firebaseUtils;
     private static Usuario user;
     private static Uri uri;
+    private static Context context;
 
     DatabaseReference databaseRef;
 
-    public static final int REQUEST_CODE = 1234;
+    public static final int SELECT_PIC_CODE = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +60,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         getSupportActionBar().setTitle("Mi cuenta");
 
         firebaseUtils = new FirebaseUtils(ActivityCuentaEditar.this);
-
+        context = ActivityCuentaEditar.this;
         user = ActivityMain.user;
 
         // Instanciamos las views
@@ -101,10 +108,15 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         });
 
         // Se sube la nueva foto
-        if (uri != null) {
+        if (newUser.getFotoPerfil() != null) {
             firebaseUtils.subirImagenUsuario(newUser.getFotoPerfil(), uri);
         }
 
+        // Devolvemos resultado
+        Intent returnIntent = new Intent();
+        // Usuario a retornar
+        returnIntent.putExtra("usuario", newUser);
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 
@@ -118,8 +130,6 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         String apellidos = editApellidosCuenta.getText().toString().trim();
         String pais = editPaisCuenta.getText().toString().trim();
         String ciudad = editCiudadCuenta.getText().toString().trim();
-        String foto = firebaseUtils.getFileName(uri);
-        System.out.println("----------------nombre foto: " + foto + " -------------");
 
         // Construimos el usuario
         u.setEmail(email);
@@ -132,8 +142,11 @@ public class ActivityCuentaEditar extends AppCompatActivity {
             u.setPais(pais);
         if (!ciudad.isEmpty())
             u.setCiudad(ciudad);
-        if (!foto.isEmpty())
+        if(uri != null) {
+            String foto = firebaseUtils.getFileName(uri);
             u.setFotoPerfil(foto);
+        }
+
         return u;
     }
 
@@ -141,23 +154,17 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PIC_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
+        if (requestCode == SELECT_PIC_CODE && resultCode == RESULT_OK && data.getData() != null) {
             uri = data.getData();
-            System.out.println("--------------------uri: " + uri.toString() + "--------------------");
-
             // Se actualiza la imagen del layout
-            System.out.println("--------------------Entra en el onactivityresult--------------------");
-
             imagenPerfilEditar.setImageURI(uri);
-            System.out.println("--------------------Anyade la imagen en el layout--------------------");
-
         }
     }
 
@@ -168,7 +175,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
             String apellidos = user.getApellidos();
             String pais = user.getPais();
             String ciudad = user.getCiudad();
-
+            String foto = user.getFotoPerfil();
             if (nombre != null) {
                 nombre = nombre.trim().replaceAll("\\s+", " ");
                 if (!nombre.isEmpty())
@@ -188,6 +195,14 @@ public class ActivityCuentaEditar extends AppCompatActivity {
                 ciudad = ciudad.trim().replaceAll("\\s+", " ");
                 if (!ciudad.isEmpty())
                     editCiudadCuenta.setText(ciudad);
+            }
+            if (foto != null) {
+                StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + user.getFotoPerfil());
+
+                Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(mStorageRef)
+                        .into(imagenPerfilEditar);
             }
         }
     }
@@ -210,9 +225,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
                 if (cambiosRealizados()) {
                     actualizarUsuario();
                     ActivityMain.user = user;
-                    setResult(RESULT_OK, new Intent());
                 }
-                //finish();
                 break;
             case android.R.id.home:
                 // Mostrar un alert de confirmacion
@@ -236,7 +249,6 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         String nuevoApellidos = editApellidosCuenta.getText().toString();
         String nuevoPais = editPaisCuenta.getText().toString();
         String nuevoCiudad = editCiudadCuenta.getText().toString();
-
         if (!nombre.equals(nuevoNombre) || !apellidos.equals(nuevoApellidos)
                 || !pais.equals(nuevoPais) || !ciudad.equals(nuevoCiudad) ||
                 uri != null){
@@ -246,7 +258,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
     }
 
     public void mostrarAviso() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(ActivityCuentaEditar.this);
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setTitle("Descartar cambios");
         alert.setMessage("¿Desea descartar los cambios realizados?");
         alert.setPositiveButton("Si", new DialogInterface.OnClickListener() {

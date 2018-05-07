@@ -72,8 +72,17 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
     // Inflamos contenido de los items para la lista
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_producto, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_producto, parent, false);
+        final ViewHolder viewHolder = new ViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = viewHolder.getAdapterPosition();
+                if(mListener!=null) {
+                    mListener.onItemClick(listaProductos.get(position), position);
+                }
+            }
+        });
         return viewHolder;
     }
 

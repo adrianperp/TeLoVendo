@@ -1,5 +1,7 @@
 package com.example.adrian.telovendo.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ActivityCuenta extends AppCompatActivity {
 
-    private FirebaseUtils firebaseUtils;
+    private static FirebaseUtils firebaseUtils;
 
     private static CircleImageView imagenPerfil;
     private static TextView textNombre;
@@ -32,6 +34,7 @@ public class ActivityCuenta extends AppCompatActivity {
 
     private static Usuario usuario;
     private static final int REQUEST_CODE = 123;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class ActivityCuenta extends AppCompatActivity {
         setContentView(R.layout.activity_cuenta);
 
         firebaseUtils = new FirebaseUtils(ActivityCuenta.this);
-
+        context = ActivityCuenta.this;
         usuario = ActivityMain.user;
 
         //add back button
@@ -55,6 +58,7 @@ public class ActivityCuenta extends AppCompatActivity {
 
         System.out.println("--------------------Cargando interfaz al abrir la activity--------------------");
         cargarInterfaz();
+        cargarFotoPerfil();
     }
 
     // Metodo que asigna contenido a la interfaz
@@ -75,19 +79,27 @@ public class ActivityCuenta extends AppCompatActivity {
             } else {
                 textPaisCiudad.setText(usuario.getPais() + ", " + usuario.getCiudad());
             }
-            // Asiganmos la foto al item
-            String userImg = usuario.getFotoPerfil();
-            if (userImg != null) {
-                StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + usuario.getFotoPerfil());
-
-                Glide.with(ActivityCuenta.this)
-                        .using(new FirebaseImageLoader())
-                        .load(mStorageRef)
-                        .into(imagenPerfil);
-            }
         }
         else {
             Toast.makeText(this, "No se pudieron obtener los datos del usuario", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static void cargarFotoPerfil() {
+        // Asiganmos la foto al item
+        String userImg = usuario.getFotoPerfil();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>Obteniendo nombre de imagen: " + userImg);
+        if (userImg != null) {
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + usuario.getFotoPerfil());
+
+            Glide.with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(mStorageRef)
+                    .into(imagenPerfil);
+            System.out.println(">>>>>>>>>Asignada la imagen");
+        }
+        else {
+            imagenPerfil.setImageResource(R.drawable.avatar);
         }
     }
 
@@ -120,10 +132,12 @@ public class ActivityCuenta extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
             Toast.makeText(this, "Se ha actualizado la información", Toast.LENGTH_SHORT).show();
-            usuario = ActivityMain.user;
+            usuario = (Usuario)data.getSerializableExtra("usuario");
+            // Recargar interfaz
             cargarInterfaz();
+            System.out.println(">>>>>>>>>>>>>Carga la interfaz");
         }
     }
 }

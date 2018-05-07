@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.adrian.telovendo">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -24,7 +26,8 @@
         <activity android:name=".activities.ActivityRegistro" />
         <activity android:name=".activities.ActivityCuenta" />
         <activity android:name=".activities.ActivityListarCategoria" />
-        <activity android:name=".activities.ActivityCuentaEditar"></activity>
+        <activity android:name=".activities.ActivityCuentaEditar" />
+        <activity android:name=".activities.ActivityDetallesProducto"></activity>
     </application>
 
 </manifest>

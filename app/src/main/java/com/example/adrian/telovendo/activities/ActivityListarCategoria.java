@@ -1,6 +1,7 @@
 package com.example.adrian.telovendo.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -29,7 +30,7 @@ public class ActivityListarCategoria extends AppCompatActivity {
     Producto p;
     DatabaseReference ref;
     FirebaseUtils firebaseUtils;
-    public List<Producto> listaProductos = new ArrayList<Producto>();
+    public static List<Producto> listaProductos = new ArrayList<Producto>();
 
     public static Context context;
 
@@ -54,6 +55,17 @@ public class ActivityListarCategoria extends AppCompatActivity {
         recyclerProductos.setItemAnimator(new DefaultItemAnimator());
         recyclerProductos.setAdapter(productoAdapter);
 
+        // Para responder al evento de clic...
+        productoAdapter.setOnItemListener(new ProductoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Producto p, int position) {
+                System.out.println(">>>>>>>>>>>>>Entra en onitemclick");
+                Intent activityDetallesProducto = new Intent(ActivityListarCategoria.this, ActivityDetallesProducto.class);
+                activityDetallesProducto.putExtra("posicion", position);
+                startActivity(activityDetallesProducto);
+            }
+        });
+
         // Realizamos una consulta a la base de datos y recuperamos los productos de una categoria
         ref = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_PRODUCTOS);
         Query q = ref.orderByChild(firebaseUtils.CAMPO_CATEGORIA).equalTo(categoria);
@@ -61,6 +73,8 @@ public class ActivityListarCategoria extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Producto p;
+                // Vaciamos la lista
+                listaProductos.clear();
                 // Recuperamos los productos de esa categoria
                 for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
                     p = datasnap.getValue(Producto.class);
@@ -75,12 +89,6 @@ public class ActivityListarCategoria extends AppCompatActivity {
             }
         });
 
-        // Para responder al evento de clic...
-        productoAdapter.setOnItemListener(new ProductoAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Producto p, int position) {
 
-            }
-        });
     }
 }
