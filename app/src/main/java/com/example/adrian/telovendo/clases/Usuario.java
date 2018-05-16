@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class Usuario implements Serializable{
 
+    private String idUsuario;
     private String nombre;
     private String apellidos;
     private String sexo;
@@ -19,10 +20,11 @@ public class Usuario implements Serializable{
     private String fotoPerfil;
     private String email, contrasenya;
     private double valoracion = -1;
-    private ArrayList<String> listaBorradores = new ArrayList<String>();
     private ArrayList<String> listaProductos = new ArrayList<String>();
+    private ArrayList<String> listaBorradores = new ArrayList<String>();
     private ArrayList<String> listaCompras = new ArrayList<String>();
     private ArrayList<String> listaVentas = new ArrayList<String>();
+    private ArrayList<String> listaChats = new ArrayList<String>();
 
     // Constructores
     public Usuario(String nombre, String apellidos, String sexo, String pais, String ciudad, String codigoPostal,
@@ -36,8 +38,8 @@ public class Usuario implements Serializable{
         this.fotoPerfil = fotoPerfil;
     }
 
-    public Usuario(/*String id, */String nombre, String apellidos, String email, String contrasenya){
-        //this.id = id;
+    public Usuario(String idUsuario, String nombre, String apellidos, String email, String contrasenya){
+        this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.email = email;
@@ -49,14 +51,13 @@ public class Usuario implements Serializable{
     }
 
     // Getters y setters
-
-    /*public String getId() {
-        return id;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }*/
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
     public String getNombre() {
         return nombre;
@@ -168,6 +169,14 @@ public class Usuario implements Serializable{
 
     public void setListaVentas(ArrayList<String> listaVentas) {
         this.listaVentas = listaVentas;
+    }
+
+    public ArrayList<String> getListaChats() {
+        return listaChats;
+    }
+
+    public void setListaChats(ArrayList<String> listaChats) {
+        this.listaChats = listaChats;
     }
 
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ActivityChat"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerChat"
+        android:background="#d1d1d1"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="0"
+        android:background="#fff"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/editMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:hint="Escribe aquí tu mensaje..."
+            android:inputType="textPersonName"
+            android:padding="5dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_send"
+            android:tint="@android:color/white"
+            app:backgroundTint="#fb4955"
+            app:fabSize="mini" />
+    </LinearLayout>
+</LinearLayout>

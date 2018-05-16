@@ -1,15 +1,21 @@
 package com.example.adrian.telovendo.activities;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
+import com.example.adrian.telovendo.clases.Chat;
+import com.example.adrian.telovendo.clases.Mensaje;
 import com.example.adrian.telovendo.clases.Producto;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.utilidades.FirebaseUtils;
@@ -36,6 +42,9 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     private Producto p;
     private static Usuario u;
     private static Context context;
+    private ArrayList<Chat> listaChats;
+
+    // Views
     private TextView textNombreDetalles;
     private TextView textDescripcionDetalles;
     private TextView textPrecioDetalles;
@@ -44,10 +53,13 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     private TextView textModeloDetalles;
     private TextView textNombreUsuario;
     private CircleImageView imagenPerfilUsuario;
+    private ImageButton buttonChat;
 
+    // Galeria
     private ViewPager viewPager;
     private ViewPagerAdapter viewPageAdapter;
 
+    // Firebase
     private static DatabaseReference databaseRef;
     private static FirebaseUtils firebaseUtils;
 
@@ -58,6 +70,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
 
         firebaseUtils = new FirebaseUtils(ActivityDetallesProducto.this);
         context = ActivityDetallesProducto.this;
+        listaChats = new ArrayList<Chat>();
 
         // Instanciamos las views
         textNombreDetalles = findViewById(R.id.textNombreDetalle);
@@ -68,6 +81,8 @@ public class ActivityDetallesProducto extends AppCompatActivity {
         textModeloDetalles = findViewById(R.id.textModeloDetalle);
         textNombreUsuario = findViewById(R.id.textNombreUsuario);
         imagenPerfilUsuario = findViewById(R.id.imagenFotoUsuario);
+        buttonChat = findViewById(R.id.buttonChat);
+        //buttonChat.setEnabled(false);
 
         // Recibiendo la posicion del conductor
         posicionProducto = getIntent().getIntExtra("posicion", -1);
@@ -80,13 +95,19 @@ public class ActivityDetallesProducto extends AppCompatActivity {
         // Recibir el usuario del producto
         getUsuario(p.getUsuario());
 
-        if (p == null) {
-            System.out.println(">>>>>>>PRODUCTO NULL");
-        }
-        else {
-            System.out.println(">>>>>>>PRODUCTO LLEGA CORRECTAMENTE");
+        if (p != null) {
             cargarInterfaz();
         }
+
+        buttonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent activityChat = new Intent(ActivityDetallesProducto.this, ActivityChat.class);
+                activityChat.putExtra("emisor", ActivityMain.user);
+                activityChat.putExtra("receptor", u);
+                startActivity(activityChat);
+            }
+        });
     }
 
     // Metodo que asigna el viewpager con las fotos
@@ -114,6 +135,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
         }
     }
 
+    // Recuperamos un usuario para mostrar su informacion
     protected void getUsuario(String email) {
         databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
         Query q = databaseRef.orderByChild(firebaseUtils.CAMPO_EMAIL).equalTo(email);
@@ -131,6 +153,10 @@ public class ActivityDetallesProducto extends AppCompatActivity {
 
             }
         });
+        // Activamos boton chat
+        /*if (u != null && ActivityMain.user.getEmail().equals(u.getEmail())) {
+            buttonChat.setEnabled(true);
+        }*/
     }
 
     protected void actualizarDatosUsuario(Usuario u) {

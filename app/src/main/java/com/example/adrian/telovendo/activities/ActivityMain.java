@@ -64,7 +64,8 @@ public class ActivityMain extends AppCompatActivity
 
         // Obtenemos el usuario logueado
         firebaseUser = firebaseUtils.getUsuarioLogueado();
-        user = getMiUsuario(firebaseUser);
+        // Actualizamos user
+        getMiUsuario(firebaseUser);
 
         // RecyclerView
         listaCategorias = findViewById(R.id.recyclerCategorias);
@@ -112,20 +113,18 @@ public class ActivityMain extends AppCompatActivity
         });
     }
 
-    public Usuario getMiUsuario(FirebaseUser firebaseUser) {
+    public void getMiUsuario(FirebaseUser firebaseUser) {
         // Obteniendo referencia al usuario
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
         final String email = firebaseUser.getEmail();
-        final Usuario[] usuario = new Usuario[1];
 
         Query q = databaseRef.orderByChild(firebaseUtils.CAMPO_EMAIL).equalTo(email);
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
                     user = userSnapshot.getValue(Usuario.class);
-
-                    //usuario[0] = userSnapshot.getValue(Usuario.class);
+                    System.out.println(user.getEmail());
                 }
             }
 
@@ -134,7 +133,6 @@ public class ActivityMain extends AppCompatActivity
 
             }
         });
-        return usuario[0];
     }
 
     // rellenar lista de categorias

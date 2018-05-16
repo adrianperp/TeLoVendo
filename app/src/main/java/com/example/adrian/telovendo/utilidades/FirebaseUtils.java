@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.adrian.telovendo.activities.ActivityCuenta;
 import com.example.adrian.telovendo.activities.ActivityCuentaEditar;
 import com.example.adrian.telovendo.activities.ActivityMain;
+import com.example.adrian.telovendo.clases.Chat;
 import com.example.adrian.telovendo.clases.Producto;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
@@ -46,6 +47,7 @@ public class FirebaseUtils {
     public final String CAMPO_NOMBRE = "nombre";
     public final String CAMPO_APELLIDOS = "apellidos";
     public final String CAMPO_EMAIL = "email";
+    public final String CAMPO_LISTA_CHATS = "listaChats";
 
     // Productos
     public final String NODO_PRODUCTOS = "productos";
@@ -59,6 +61,10 @@ public class FirebaseUtils {
     public final String CAMPO_VALORACION_PRODUCTO = "valoracion";
     public final String CAMPO_USUARIO = "usuario";
 
+    // Chat
+    public final String NODO_CHATS = "chats";
+    public final String CAMPO_LISTA_MENSAJES = "listaMensajes";
+
     public final String STORAGE_PATH_PRODUCTOS = "productos/";
     public final String STORAGE_PATH_PRODUCTOS_BORRADOR = "productos_borrador/";
     public final String STORAGE_PATH_USUARIOS = "usuarios/";
@@ -71,10 +77,8 @@ public class FirebaseUtils {
     public void anyadirUsuario(Usuario u){
         // Referencia a la base de datos
         databaseRef = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS);
-
-        // Se genera una clave para crear el nodo
-        String key = databaseRef.push().getKey();
-
+        // Obtenemos la key
+        String key = u.getIdUsuario();
         // Creando nuevo nodo con la clave
         databaseRef.child(key).setValue(u);
     }
@@ -83,6 +87,57 @@ public class FirebaseUtils {
     public FirebaseUser getUsuarioLogueado() {
         mAuth = FirebaseAuth.getInstance();
         return mAuth.getCurrentUser();
+    }
+
+    // Metodo que actualiza los chats de dos usuarios
+    public void actualizarChatsUsuarios(final Usuario u1, final Usuario u2) {
+        // Creamos la referencia a la base de datos
+        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS);
+        Query q1 = databaseRef.orderByChild(CAMPO_EMAIL).equalTo(u1.getEmail());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                String clave;
+                for (DataSnapshot datasnap : snapshot.getChildren()){
+                    //obtenemos la clave
+                    clave = datasnap.getKey();
+                    //accediendo al conductor con la clave
+                    databaseRef.child(clave).child(CAMPO_LISTA_CHATS).setValue(u1.getListaChats());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Query q2 = databaseRef.orderByChild(CAMPO_EMAIL).equalTo(u2.getEmail());
+        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                String clave;
+                for (DataSnapshot datasnap : snapshot.getChildren()){
+                    //obtenemos la clave
+                    clave = datasnap.getKey();
+                    //accediendo al conductor con la clave
+                    databaseRef.child(clave).child(CAMPO_LISTA_CHATS).setValue(u2.getListaChats());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        System.out.println("-------------Usuarios actualizados-------------");
+    }
+
+    public void anyadirChat(Chat chat) {
+        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_CHATS);
+        String key = databaseRef.getKey();
+        databaseRef.child(key).setValue(chat);
+        System.out.println("Chat anyadido");
     }
 
     public void subirProducto(Producto p){

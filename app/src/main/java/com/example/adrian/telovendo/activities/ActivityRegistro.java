@@ -93,8 +93,8 @@ public class ActivityRegistro extends AppCompatActivity {
                             Toast.makeText(ActivityRegistro.this, R.string.toastRegistroCorrecto,
                                     Toast.LENGTH_SHORT).show();
                             // Anyadimos el nuevo usuario a la base de datos
-                            //String id = UUID.randomUUID().toString();
-                            firebaseUtils.anyadirUsuario(new Usuario(/*id, */nombre, apellidos, email, contrasenya));
+                            String idUsuario = UUID.randomUUID().toString();
+                            firebaseUtils.anyadirUsuario(new Usuario(idUsuario, nombre, apellidos, email, contrasenya));
                             // Lo logueamos
                             //firebaseUtils.buscarUsuarioEmail(email);
                             // Accedemos a la activity main
