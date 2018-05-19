@@ -29,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="10"
-                android:text="Nombre producto"
                 android:textSize="24sp" />
 
             <TextView
@@ -45,8 +44,7 @@
             android:id="@+id/textDescripcionItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="Esta es la descripción del procucto en la que se habla de lo que se vende y las características. También se intenta añadir la máxima información que sea posible" />
+            android:layout_marginBottom="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:gravity="bottom|right"
-                android:text="50 €"
                 android:textSize="30sp"
                 android:textStyle="bold" />
         </LinearLayout>

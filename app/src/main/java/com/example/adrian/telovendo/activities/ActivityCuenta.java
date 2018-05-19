@@ -43,20 +43,23 @@ public class ActivityCuenta extends AppCompatActivity {
 
         firebaseUtils = new FirebaseUtils(ActivityCuenta.this);
         context = ActivityCuenta.this;
-        usuario = ActivityMain.user;
+        usuario = (Usuario)getIntent().getSerializableExtra("usuario");
 
         //add back button
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle("Mi cuenta");
+        // Titulo toolbar
+        if(usuario.getEmail().equals(ActivityMain.firebaseUser.getEmail()))
+            getSupportActionBar().setTitle("Mi cuenta");
+        else
+            getSupportActionBar().setTitle("Perfil de usuario");
 
         textNombre = findViewById(R.id.textNombreCuenta);
         textEmail = findViewById(R.id.textEmailCuenta);
         textPaisCiudad = findViewById(R.id.textPaisCiudadCuenta);
         imagenPerfil = findViewById(R.id.imagenFotoCuenta);
 
-        System.out.println("--------------------Cargando interfaz al abrir la activity--------------------");
         cargarInterfaz();
         cargarFotoPerfil();
     }
@@ -88,7 +91,6 @@ public class ActivityCuenta extends AppCompatActivity {
     public static void cargarFotoPerfil() {
         // Asiganmos la foto al item
         String userImg = usuario.getFotoPerfil();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>Obteniendo nombre de imagen: " + userImg);
         if (userImg != null) {
             StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + usuario.getFotoPerfil());
 
@@ -96,7 +98,6 @@ public class ActivityCuenta extends AppCompatActivity {
                     .using(new FirebaseImageLoader())
                     .load(mStorageRef)
                     .into(imagenPerfil);
-            System.out.println(">>>>>>>>>Asignada la imagen");
         }
         else {
             imagenPerfil.setImageResource(R.drawable.avatar);
@@ -105,8 +106,9 @@ public class ActivityCuenta extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflamos el menu
-        getMenuInflater().inflate(R.menu.activity_cuenta, menu);
+        // Inflamos el menu si es el perfil del usuario logueado
+        if(usuario.getEmail().equals(ActivityMain.firebaseUser.getEmail()))
+            getMenuInflater().inflate(R.menu.activity_cuenta, menu);
 
         return super.onCreateOptionsMenu(menu);
     }

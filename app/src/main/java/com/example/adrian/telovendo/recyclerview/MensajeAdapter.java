@@ -6,16 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
+import com.example.adrian.telovendo.activities.ActivityChat;
 import com.example.adrian.telovendo.clases.Mensaje;
+import com.example.adrian.telovendo.clases.Usuario;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHolder>{
 
+    public static FirebaseUtils firebaseUtils = new FirebaseUtils(ActivityChat.context);
     public List<Mensaje> listaMensajes;
 
     public MensajeAdapter(List<Mensaje> listaMensajes) {
@@ -26,13 +36,14 @@ public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHold
         private TextView mensaje;
         private TextView hora;
         private TextView emisor;
-        //ImageView foto;
+        CircleImageView foto;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mensaje = itemView.findViewById(R.id.textMensaje);
             hora = itemView.findViewById(R.id.textHora);
             emisor = itemView.findViewById(R.id.textEmisor);
+            foto = itemView.findViewById(R.id.imageFotoUsuarioMensaje);
         }
     }
 
@@ -56,10 +67,22 @@ public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mensaje.setText(listaMensajes.get(position).getTexto());
         holder.hora.setText(getDateDif(new Date(), listaMensajes.get(position).getFechaEnvio()));
         holder.emisor.setText(listaMensajes.get(position).getEmisor());
+
+        // Reconocer usuario a partir de email
+        Usuario myUser = (ActivityChat.emisor.getEmail().equals(holder.emisor)) ? ActivityChat.emisor : ActivityChat.receptor;
+        // Comprobar si tiene foto
+        if (myUser.getFotoPerfil() != null) {
+            // Referencia a la foto
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + myUser.getFotoPerfil());
+            Glide.with(ActivityChat.context)
+                    .using(new FirebaseImageLoader())
+                    .load(mStorageRef)
+                    .into(holder.foto);
+        }
     }
 
     @Override

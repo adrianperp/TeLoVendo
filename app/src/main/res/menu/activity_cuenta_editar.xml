@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_cuenta_guardar"
         android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_save"
+        android:icon="@drawable/ic_menu_save"
         android:title="@string/action_cuenta_guardar"
         app:showAsAction="always" />
 </menu>

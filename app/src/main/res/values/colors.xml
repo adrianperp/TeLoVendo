@@ -4,10 +4,22 @@
     <color name="colorPrimaryDark">@color/blue</color>
     <color name="colorAccent">@color/rojo</color>
     <color name="grisClaro">#d0d0d0</color>
+    <color name="grisOscuro">#737373</color>
     <color name="white">#fff</color>
     <color name="blue">#383b53</color>
     <color name="vainilla">#d1caa1</color>
     <color name="rojo">#fe4a49</color>
     <color name="azulClaro">#2ab7ca</color>
     <color name="amarillo">#fed766</color>
+    <color name="azulOscuro">#1a7884</color>
+
+    <!-- Categorias -->
+    <color name="catRojo">#e6a7a7</color>
+    <color name="catMarron">#d5b492</color>
+    <color name="catAmarillo">#fffc9d</color>
+    <color name="catAzul">#c7eeff</color>
+    <color name="catGris">#e8e8e8</color>
+    <color name="catMorado">#caabfc</color>
+    <color name="catVerde">#dafeec</color>
+
 </resources>

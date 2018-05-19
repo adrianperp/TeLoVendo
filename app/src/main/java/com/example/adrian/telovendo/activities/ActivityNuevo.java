@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -214,7 +215,10 @@ public class ActivityNuevo extends AppCompatActivity {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             ImageView image = new ImageView(ActivityNuevo.this);
             // Ajustamos la dimension
-            image.setLayoutParams(new ViewGroup.LayoutParams(250, 250));
+           //ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(300, 300);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(250,250);
+            params.setMargins(20,0,0,0);
+            image.setLayoutParams(params);
             // Se asigna el contenido a la imagen
             image.setImageBitmap(bitmap);
             // Lo anyadimos al layout

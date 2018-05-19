@@ -16,10 +16,6 @@
             android:id="@+id/nav_chat"
             android:icon="@drawable/ic_menu_chat"
             android:title="@string/drawer_chat" />
-        <item
-            android:id="@+id/nav_ajustes"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/drawer_ajustes" />
     </group>
 
     <item android:title="Área personal">
@@ -28,6 +24,10 @@
                 android:id="@+id/nav_cuenta"
                 android:icon="@drawable/ic_menu_cuenta"
                 android:title="@string/drawer_perfil" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="@string/drawer_logout" />
         </menu>
     </item>
 

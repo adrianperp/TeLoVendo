@@ -27,6 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/editNuevoNombre"
+                    style="@style/estiloEditText"
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
@@ -39,19 +40,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/editNuevoDescripcion"
+                    style="@style/estiloEditText"
                     android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/editNuevoPrecio"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <EditText
-                        android:id="@+id/editNuevoPrecio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/editNuevoPrecio"
-                        android:inputType="numberDecimal" />
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:hint="@string/editNuevoPrecio"
+                    style="@style/estiloEditText"
+                    android:inputType="numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -63,6 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/editNuevoMarca"
+                    style="@style/estiloEditText"
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
@@ -75,23 +79,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/editNuevoModelo"
+                    style="@style/estiloEditText"
                     android:inputType="textPersonName" />
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
                 android:id="@+id/spinnerNuevoCategorias"
+                style="@style/estiloEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_weight="1"
+                android:background="@drawable/cardview_background"
                 android:entries="@array/array_categorias"
+                android:paddingLeft="20dp"
                 android:prompt="@string/spinner_categorias"
                 android:spinnerMode="dialog" />
 
             <TextView
                 android:id="@+id/textNuevoAnyadirFotos"
+                style="@style/estiloEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/textNuevoAnyadirFotos" />
+                android:text="@string/textNuevoAnyadirFotos"
+                android:textSize="18sp" />
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"
@@ -100,13 +110,17 @@
                 <LinearLayout
                     android:id="@+id/layoutFotos"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    style="@style/estiloEditText"
+                    android:layout_marginTop="10dp">
 
                     <ImageButton
                         android:id="@+id/botonNuevoAnyadirFoto"
                         android:layout_width="250px"
                         android:layout_height="250px"
-                        android:background="@color/rojo"
+                        android:background="@drawable/cardview_background"
+                        android:padding="30dp"
+                        android:scaleType="centerInside"
                         android:src="@drawable/ic_button_add" />
 
                 </LinearLayout>

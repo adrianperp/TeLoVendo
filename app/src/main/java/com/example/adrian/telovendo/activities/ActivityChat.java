@@ -1,5 +1,6 @@
 package com.example.adrian.telovendo.activities;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,10 +35,11 @@ public class ActivityChat extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     MensajeAdapter mAdapter;
 
-    Usuario emisor;
-    Usuario receptor;
+    public static Usuario emisor;
+    public static Usuario receptor;
 
     Chat chat;
+    public static Context context;
     DatabaseReference databaseRef;
     FirebaseUtils firebaseUtils;
 
@@ -49,7 +51,11 @@ public class ActivityChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        //add back button
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        context = ActivityChat.this;
         firebaseUtils = new FirebaseUtils(this);
         listaMensajes = new ArrayList<>();
         editMensaje = findViewById(R.id.editMensaje);
@@ -200,8 +206,12 @@ public class ActivityChat extends AppCompatActivity {
             case R.id.action_chat_update:
                 mAdapter.notifyDataSetChanged();
                 break;
+            case android.R.id.home:
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }

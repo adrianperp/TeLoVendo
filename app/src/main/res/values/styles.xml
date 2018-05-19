@@ -15,6 +15,14 @@
 
     </style>
 
+    <style name="estiloTextoGeneral">
+        <item name="android:textColor">@color/grisOscuro</item>
+    </style>
+
+    <style name="estiloTextoOscuro">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="estiloTexto">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -25,8 +33,7 @@
     </style>
 
     <style name="estiloEditText">
-        <item name="android:background">@color/white</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
 
     <style name="estiloActivityNuevo">
@@ -51,7 +58,7 @@
 
     <style name="ratingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/azulClaro</item>
-        <item name="colorControlActivated">@color/blue</item>
+        <item name="colorControlActivated">@color/amarillo</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -179,5 +179,25 @@ public class Usuario implements Serializable{
         this.listaChats = listaChats;
     }
 
-
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario='" + idUsuario + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", pais='" + pais + '\'' +
+                ", ciudad='" + ciudad + '\'' +
+                ", codigoPostal='" + codigoPostal + '\'' +
+                ", fotoPerfil='" + fotoPerfil + '\'' +
+                ", email='" + email + '\'' +
+                ", contrasenya='" + contrasenya + '\'' +
+                ", valoracion=" + valoracion +
+                ", listaProductos=" + listaProductos +
+                ", listaBorradores=" + listaBorradores +
+                ", listaCompras=" + listaCompras +
+                ", listaVentas=" + listaVentas +
+                ", listaChats=" + listaChats +
+                '}';
+    }
 }

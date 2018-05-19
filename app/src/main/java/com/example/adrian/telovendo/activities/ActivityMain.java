@@ -1,12 +1,15 @@
 package com.example.adrian.telovendo.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerViewAccessibilityDelegate;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,16 +22,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Categoria;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.recyclerview.ProductoAdapter;
 import com.example.adrian.telovendo.recyclerview.RecyclerViewAdapter;
 import com.example.adrian.telovendo.utilidades.FirebaseUtils;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +44,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,23 +55,40 @@ public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static FirebaseUser firebaseUser;
+    public static FirebaseAuth.AuthStateListener mAuthListener;
     public static Usuario user;
+    public static Context context;
     private static FirebaseUtils firebaseUtils;
 
-
+    // Contenido
     private Button botonPerfil;
+    private Toolbar toolbar;
+
+    // Recycler
     private RecyclerView listaCategorias;
     private RecyclerViewAdapter adaptadorCategorias;
-    private Toolbar toolbar;
+
+    // Drawer
+    private NavigationView navigationView;
+    private static ImageView imageUserDrawer;
+    private static TextView textNombreDrawer;
+    private static TextView textEmailDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        context = ActivityMain.this;
         firebaseUtils = new FirebaseUtils(ActivityMain.this);
 
-        // Obtenemos el usuario logueado
+        // Drawer
+        navigationView = findViewById(R.id.nav_view);
+        imageUserDrawer = navigationView.getHeaderView(0).findViewById(R.id.imageUserDrawer);
+        textNombreDrawer = navigationView.getHeaderView(0).findViewById(R.id.textNombreDrawer);
+        textEmailDrawer = navigationView.getHeaderView(0).findViewById(R.id.textEmailDrawer);
+
+        // Recibiendo usuario logueado
         firebaseUser = firebaseUtils.getUsuarioLogueado();
         // Actualizamos user
         getMiUsuario(firebaseUser);
@@ -70,18 +96,17 @@ public class ActivityMain extends AppCompatActivity
         // RecyclerView
         listaCategorias = findViewById(R.id.recyclerCategorias);
         listaCategorias.setLayoutManager(new LinearLayoutManager(this));
-
         adaptadorCategorias = new RecyclerViewAdapter(obtenerCategorias());
         listaCategorias.setAdapter(adaptadorCategorias);
 
         // Toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Categorías");
 
         // Boton flotante
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,13 +118,13 @@ public class ActivityMain extends AppCompatActivity
         });
 
         // Menu lateral
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         // Respuesta al pulsar sobre algun elemento de la lista
@@ -113,6 +138,24 @@ public class ActivityMain extends AppCompatActivity
         });
     }
 
+    public static void cargarInfoUsuarioDrawer() {
+
+        System.out.println("textNombreDrawer == null?? " + (textNombreDrawer == null));
+        System.out.println("textEmailDrawer == null?? " + (textEmailDrawer == null));
+
+        if (textNombreDrawer != null) textNombreDrawer.setText(user.getNombre() + " " + user.getApellidos());
+        if (textEmailDrawer != null) textEmailDrawer.setText(user.getEmail());
+        // Comprobar que el usuario tiene foto
+        if (user.getFotoPerfil() != null && imageUserDrawer != null) {
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + user.getFotoPerfil());
+            Glide.with(context)
+                    .using(new FirebaseImageLoader())
+                    .load(mStorageRef)
+                    .into(imageUserDrawer);
+        }
+
+    }
+
     public void getMiUsuario(FirebaseUser firebaseUser) {
         // Obteniendo referencia al usuario
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
@@ -124,7 +167,9 @@ public class ActivityMain extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
                     user = userSnapshot.getValue(Usuario.class);
-                    System.out.println(user.getEmail());
+                    // Cargara la informacion del usuario en el drawer
+                    //System.out.println(user.toString());
+                    cargarInfoUsuarioDrawer();
                 }
             }
 
@@ -140,12 +185,15 @@ public class ActivityMain extends AppCompatActivity
         int[] idsFotos = {0, R.drawable.cat_motor, R.drawable.cat_hogar, R.drawable.cat_electronica,
                 R.drawable.cat_juegos, R.drawable.cat_hobbies, R.drawable.cat_ropa, R.drawable.cat_libros,
                 R.drawable.cat_infantil, R.drawable.cat_animales, R.drawable.cat_electrodomesticos};
+        int[] idsColores = {0, R.color.catRojo, R.color.catAzul, R.color.catAmarillo,
+                R.color.catMorado, R.color.catRojo, R.color.catAmarillo, R.color.catMarron,
+                R.color.catAzul, R.color.catGris, R.color.catVerde};
         List<Categoria> listaCategorias = new ArrayList<Categoria>();
         String[] arrayCat = getResources().getStringArray(R.array.array_categorias);
 
         // Se descarta la primera opcion (Selecciona)
         for (int i = 1; i < arrayCat.length; i++)   {
-            listaCategorias.add(new Categoria(arrayCat[i],idsFotos[i]));
+            listaCategorias.add(new Categoria(arrayCat[i],idsFotos[i],idsColores[i]));
         }
         return listaCategorias;
     }
@@ -159,33 +207,7 @@ public class ActivityMain extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main, menu);
-
-        MenuItem item = menu.findItem(R.id.itemBuscar);
-        SearchView searchView = (SearchView)item.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Filtra a medida que se va escribiendo
-                adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }*/
-
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -197,9 +219,9 @@ public class ActivityMain extends AppCompatActivity
         /*if (id == R.id.action_settings) {
             return true;
         }*/
-
+/*
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -207,19 +229,28 @@ public class ActivityMain extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_inicio) {
-            // Handle the camera action
-        } else if (id == R.id.nav_notificaciones) {
+        switch (id) {
+            case R.id.nav_inicio:
 
-        } else if (id == R.id.nav_chat) {
+                break;
+            case R.id.nav_notificaciones:
 
-        } else if (id == R.id.nav_ajustes) {
-
-        } else if (id == R.id.nav_cuenta) {
-            startActivity(new Intent(ActivityMain.this, ActivityCuenta.class));
+                break;
+            case R.id.nav_chat:
+                startActivity(new Intent(ActivityMain.this, ActivityListaChats.class));
+                break;
+            case R.id.nav_cuenta:
+                Intent activityCuenta = new Intent(ActivityMain.this, ActivityCuenta.class);
+                activityCuenta.putExtra("usuario", user);
+                startActivity(activityCuenta);
+                break;
+            case R.id.nav_logout:
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

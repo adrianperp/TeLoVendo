@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_publicar"
         android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_upload"
+        android:icon="@drawable/ic_menu_upload"
         android:title="@string/action_publicar"
         app:showAsAction="always" />
 </menu>

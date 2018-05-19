@@ -28,7 +28,8 @@
         <activity android:name=".activities.ActivityListarCategoria" />
         <activity android:name=".activities.ActivityCuentaEditar" />
         <activity android:name=".activities.ActivityDetallesProducto" />
-        <activity android:name=".activities.ActivityChat"></activity>
+        <activity android:name=".activities.ActivityChat" />
+        <activity android:name=".activities.ActivityListaChats"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.adrian.telovendo.R;
@@ -19,12 +20,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView nombre;
-        ImageView foto;
+        private ImageView foto;
+        private LinearLayout layoutItemCategoria;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.textNombreCategoria);
             foto = itemView.findViewById(R.id.imgCategoria);
+            layoutItemCategoria = itemView.findViewById(R.id.layoutItemCategoria);
         }
     }
 
@@ -57,6 +60,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.nombre.setText(listaCategorias.get(position).getNombre().toString());
         holder.foto.setImageResource(listaCategorias.get(position).getFoto());
+        holder.layoutItemCategoria.setBackgroundResource(listaCategorias.get(position).getColor());
+        System.out.println("Categoria: " + listaCategorias.get(position).toString());
+
     }
 
     @Override

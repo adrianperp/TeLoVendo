@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Producto;
@@ -38,6 +39,10 @@ public class ActivityListarCategoria extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar_categoria);
+
+        //add back button
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Recibiendo la categoria seleccionada
         categoria = getIntent().getStringExtra("categoria");
@@ -90,5 +95,18 @@ public class ActivityListarCategoria extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

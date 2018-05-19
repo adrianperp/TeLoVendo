@@ -7,10 +7,13 @@ import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
@@ -54,6 +57,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     private TextView textNombreUsuario;
     private CircleImageView imagenPerfilUsuario;
     private ImageButton buttonChat;
+    private LinearLayout layoutUsuario;
 
     // Galeria
     private ViewPager viewPager;
@@ -67,6 +71,10 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_producto);
+
+        //add back button
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firebaseUtils = new FirebaseUtils(ActivityDetallesProducto.this);
         context = ActivityDetallesProducto.this;
@@ -82,6 +90,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
         textNombreUsuario = findViewById(R.id.textNombreUsuario);
         imagenPerfilUsuario = findViewById(R.id.imagenFotoUsuario);
         buttonChat = findViewById(R.id.buttonChat);
+        layoutUsuario = findViewById(R.id.layoutUsuario);
         //buttonChat.setEnabled(false);
 
         // Recibiendo la posicion del conductor
@@ -106,6 +115,15 @@ public class ActivityDetallesProducto extends AppCompatActivity {
                 activityChat.putExtra("emisor", ActivityMain.user);
                 activityChat.putExtra("receptor", u);
                 startActivity(activityChat);
+            }
+        });
+
+        layoutUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent activityCuenta = new Intent(ActivityDetallesProducto.this, ActivityCuenta.class);
+                activityCuenta.putExtra("usuario", u);
+                startActivity(activityCuenta);
             }
         });
     }
@@ -185,5 +203,18 @@ public class ActivityDetallesProducto extends AppCompatActivity {
             textModeloDetalles.setText(p.getModelo());
             textModeloDetalles.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case android.R.id.home:
+                finish();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

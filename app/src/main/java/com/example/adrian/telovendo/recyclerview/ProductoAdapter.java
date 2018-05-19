@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.activities.ActivityListarCategoria;
 import com.example.adrian.telovendo.clases.Producto;
+import com.example.adrian.telovendo.utilidades.FirebaseUtils;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHolder> {
 
-    private final static String STORAGE_PATH = "productos/";
+    private static FirebaseUtils firebaseUtils = new FirebaseUtils(ActivityListarCategoria.context);
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         //Referenciamos objetos objeto de la position que nos pasan
@@ -55,7 +56,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
             }
             textPrecioLista.setText(String.valueOf(p.getPrecio()) + " €");
             // Asiganmos la foto al item
-            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(STORAGE_PATH + p.getFotos().get(0));
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_PRODUCTOS + p.getFotos().get(0));
             Glide.with(ActivityListarCategoria.context)
                     .using(new FirebaseImageLoader())
                     .load(mStorageRef)

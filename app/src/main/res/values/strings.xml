@@ -66,6 +66,7 @@
     <string name="editPaisCuenta">País</string>
     <string name="editCiudadCuenta">Ciudad</string>
     <string name="action_cuenta_guardar">Guardar</string>
+    <string name="drawer_logout">Cerrar sesión</string>
 
 
 </resources>
