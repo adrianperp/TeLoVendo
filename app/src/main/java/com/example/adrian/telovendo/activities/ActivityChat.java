@@ -70,62 +70,22 @@ public class ActivityChat extends AppCompatActivity {
         recyclerChat.setItemAnimator(new DefaultItemAnimator());
         recyclerChat.setAdapter(mAdapter);
 
-        // Recogemos los datos
-        emisor = (Usuario)getIntent().getSerializableExtra("emisor");
-        receptor = (Usuario)getIntent().getSerializableExtra("receptor");
+        // Recibiendo el chat
+        chat = (Chat)getIntent().getSerializableExtra("chat");
 
-        // Cambiamos titulo de la toolbar
-        getSupportActionBar().setTitle(receptor.getNombre() + " " + receptor.getApellidos().charAt(0) + ".");
-
-        // Comprobar si chat existe
-        databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS);
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
-                    String key = datasnap.getKey();
-                    System.out.println("Entra en SNAPSHOT: " + datasnap.getValue(Chat.class).getChatId());
-                    System.out.println("Emisor contiene?: " + (emisor.getListaChats().contains(key)));
-                    System.out.println("Receptor contiene?: " + (receptor.getListaChats().contains(key)));
-                    if (emisor.getListaChats().contains(key) && receptor.getListaChats().contains(key)) {
-                        chat = datasnap.getValue(Chat.class);
-
-                        System.out.println("------------Chat encontrado------------");
-                        break;
-                    }
-                }
-                cargarInterfaz();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        // Mantener lista actualizada
-        /*databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS).child(chat.getChatId()).child(firebaseUtils.CAMPO_LISTA_MENSAJES);
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listaMensajes.clear();
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    System.out.println("-------------ENTRA EN DATASNAPSHOT-------------");
-                    Mensaje m = snap.getValue(Mensaje.class);
-                    if(!m.isEmpty()) {
-                        // Anyadiendo a lista
-                        listaMensajes.add(m);
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
+        // Comprobar si hemos recibido un chat de la lista de chats - FORMA 1
+        if (chat != null) {
+            getSupportActionBar().setTitle(getTituloActionBar());
+            cargarInterfaz();
+        }
+        // Buscamos chat a partir de usuarios - FORMA 2
+        else {
+            emisor = (Usuario)getIntent().getSerializableExtra("emisor");
+            receptor = (Usuario)getIntent().getSerializableExtra("receptor");
+            // Comprobaremos si existe chat
+            // Despues se asigna
+            cargarChat();
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,23 +97,59 @@ public class ActivityChat extends AppCompatActivity {
         });
     }
 
-    public void cargarInterfaz() {
-        System.out.println("ENTRA EN CARGARINTERFAZ");
-        if (chat == null) {
-            // Se crea un nuevo chat
-            chat = new Chat(emisor.getEmail(), receptor.getEmail());
-            // Anyadir nuevo chat a la bd
-            String key = chat.getChatId();
-            FirebaseDatabase.getInstance().getReference().child(firebaseUtils.NODO_CHATS).child(key).setValue(chat);
-            // Anyadir chat a usuarios
-            emisor.getListaChats().add(key);
-            receptor.getListaChats().add(key);
-            databaseRef = FirebaseDatabase.getInstance().getReference().child(firebaseUtils.NODO_USUARIOS);
-            databaseRef.child(emisor.getIdUsuario()).child(firebaseUtils.CAMPO_LISTA_CHATS).setValue(emisor.getListaChats());
-            databaseRef.child(receptor.getIdUsuario()).child(firebaseUtils.CAMPO_LISTA_CHATS).setValue(receptor.getListaChats());
+    private String getTituloActionBar() {
+        Usuario emisor = chat.getListaParticipantes().get(0);
+        Usuario receptor = chat.getListaParticipantes().get(1);
+        if (emisor.getEmail().equals(ActivityMain.firebaseUser.getEmail())) {
+            return receptor.getNombre() + " " + receptor.getApellidos().charAt(0) + ".";
         }
+        else {
+            return emisor.getNombre() + " " + emisor.getApellidos().charAt(0) + ".";
+        }
+    }
+
+    // Actualiza el chat
+    public void cargarChat() {
+        databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS);
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Chat ch = null;
+                for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
+                    ch = datasnap.getValue(Chat.class);
+
+                    if(ch.isFrom(emisor, receptor)) {
+                        chat = ch;
+                        getSupportActionBar().setTitle(getTituloActionBar());
+                        break;
+                    }
+                }
+                if (chat == null) {
+                    chat = new Chat(emisor, receptor);
+                    // Se anyade a la base de datos
+                    firebaseUtils.anyadirChat(chat);
+                    // Se anyade el chat a los usuarios
+                    emisor.getListaChats().add(chat.getChatId());
+                    receptor.getListaChats().add(chat.getChatId());
+                    // Se actualizan los usuarios
+                    firebaseUtils.actualizarChatsUsuarios(emisor, receptor);
+                    getSupportActionBar().setTitle(getTituloActionBar());
+                }
+                cargarInterfaz();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    // Listener de mensajes
+    public void cargarInterfaz() {
 
         // Listener para la base de datos
+        // Referencia a la lista de mensajes
         databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS).child(chat.getChatId()).child(firebaseUtils.CAMPO_LISTA_MENSAJES);
         databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -161,7 +157,6 @@ public class ActivityChat extends AppCompatActivity {
                 if (dataSnapshot.getChildrenCount() > 0) {
                     listaMensajes.clear();
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                        //System.out.println("-------------ENTRA EN DATASNAPSHOT-------------");
                         Mensaje m = snap.getValue(Mensaje.class);
                         if (!m.isEmpty()) {
                             // Anyadiendo a lista

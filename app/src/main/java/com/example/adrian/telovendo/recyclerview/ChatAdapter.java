@@ -42,13 +42,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         private TextView textMensajeChat;
-        private TextView textUsuarioChat;
+        private TextView textNombreUsuarioChat;
         private CircleImageView imageFotoUsuarioChat;
 
         public ViewHolder(View itemView) {
             super(itemView);
             textMensajeChat = itemView.findViewById(R.id.textMensajeChat);
-            textUsuarioChat = itemView.findViewById(R.id.textEmisorChat);
+            textNombreUsuarioChat = itemView.findViewById(R.id.textEmisorChat);
             imageFotoUsuarioChat = itemView.findViewById(R.id.imageFotoUsuarioChat);
         }
     }
@@ -74,39 +74,24 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        String currentUserEmail = ActivityMain.firebaseUser.getEmail();
-        // Recoger posicion y email usuario participante
-        int posParticipante = (currentUserEmail.equals(listaChats.get(position).getListaParticipantes().get(0)) ? 1 : 0);
-        String emailParticipante = listaChats.get(position).getListaParticipantes().get(posParticipante);
-
-        holder.textMensajeChat.setText(listaChats.get(position).getListaMensajes().get(0).getTexto());
+        Usuario currentUser = ActivityMain.user;
         // Recoger usuario participante
-        databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
-        Query q = databaseRef.orderByChild(firebaseUtils.CAMPO_EMAIL).equalTo(emailParticipante);
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
-                    Usuario u = datasnap.getValue(Usuario.class);
-                    String primerApellido = (u.getApellidos() + " ").split(" ")[0];
-                    holder.textUsuarioChat.setText(u.getNombre() + " " + primerApellido);
-                    // Comprobar que el usuario tenga foto
-                    if (u.getFotoPerfil() != null) {
-                        // Referencia a la foto
-                        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + u.getFotoPerfil());
-                        Glide.with(ActivityListaChats.context)
-                                .using(new FirebaseImageLoader())
-                                .load(mStorageRef)
-                                .into(holder.imageFotoUsuarioChat);
-                    }
-                }
-            }
+        int posParticipante = (currentUser.getEmail().equals(listaChats.get(position).getListaParticipantes().get(0).getEmail()) ? 1 : 0);
+        Usuario participante = listaChats.get(position).getListaParticipantes().get(posParticipante);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        holder.textNombreUsuarioChat.setText(participante.getNombre() + " " + participante.getApellidos());
+        // Agarramos ultimo mensaje
+        holder.textMensajeChat.setText(listaChats.get(position).getListaMensajes().get(0).getTexto());
 
-            }
-        });
+        // Comprobar que el usuario tenga foto
+        if (participante.getFotoPerfil() != null) {
+            // Referencia a la foto
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + participante.getFotoPerfil());
+            Glide.with(ActivityListaChats.context)
+                    .using(new FirebaseImageLoader())
+                    .load(mStorageRef)
+                    .into(holder.imageFotoUsuarioChat);
+        }
     }
 
     @Override

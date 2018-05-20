@@ -18,24 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <ImageView
                 android:id="@+id/imgCategoria"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:src="@drawable/me_time" />
 
             <TextView
                 android:id="@+id/textNombreCategoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:text="Categoria 1"
-                android:textSize="22sp"/>
+                android:textColor="@color/white"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

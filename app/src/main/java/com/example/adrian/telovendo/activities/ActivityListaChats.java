@@ -1,6 +1,7 @@
 package com.example.adrian.telovendo.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,7 +25,7 @@ public class ActivityListaChats extends AppCompatActivity {
 
     RecyclerView recyclerChat;
     LinearLayoutManager layoutManager;
-    ChatAdapter mAdapter;
+    ChatAdapter chatAdapter;
 
     DatabaseReference databaseRef;
     FirebaseUtils firebaseUtils;
@@ -49,12 +50,22 @@ public class ActivityListaChats extends AppCompatActivity {
 
         // RecyclerView
         recyclerChat = findViewById(R.id.recyclerChats);
-        mAdapter = new ChatAdapter(listaChats);
+        chatAdapter = new ChatAdapter(listaChats);
         layoutManager = new LinearLayoutManager(this);
         //layoutManager.setReverseLayout(true); // Que la lista apunte siempre al ultimo elemento
         recyclerChat.setLayoutManager(layoutManager);
         recyclerChat.setItemAnimator(new DefaultItemAnimator());
-        recyclerChat.setAdapter(mAdapter);
+        recyclerChat.setAdapter(chatAdapter);
+
+        // Para responder al evento de clic...
+        chatAdapter.setOnItemListener(new ChatAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Chat c, int position) {
+                Intent activityDetallesProducto = new Intent(ActivityListaChats.this, ActivityChat.class);
+                activityDetallesProducto.putExtra("chat", c);
+                startActivity(activityDetallesProducto);
+            }
+        });
 
         // Listener para la lista
         databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS);
@@ -65,12 +76,12 @@ public class ActivityListaChats extends AppCompatActivity {
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                     Chat c = snap.getValue(Chat.class);
 
-                    // Anyadiendo a lista
+                    // Carga chats con mensajes
                     if (!c.getListaMensajes().isEmpty()) {
                         listaChats.add(c);
                     }
                 }
-                mAdapter.notifyDataSetChanged();
+                chatAdapter.notifyDataSetChanged();
 
             }
 

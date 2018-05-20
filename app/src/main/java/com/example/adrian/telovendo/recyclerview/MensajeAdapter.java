@@ -23,6 +23,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.adrian.telovendo.utilidades.FechasUtils.getDateDif;
+
 public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHolder>{
 
     public static FirebaseUtils firebaseUtils = new FirebaseUtils(ActivityChat.context);
@@ -73,7 +75,7 @@ public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHold
         holder.emisor.setText(listaMensajes.get(position).getEmisor());
 
         // Reconocer usuario a partir de email
-        Usuario myUser = (ActivityChat.emisor.getEmail().equals(holder.emisor)) ? ActivityChat.emisor : ActivityChat.receptor;
+        Usuario myUser = (!ActivityChat.emisor.getEmail().equals(holder.emisor)) ? ActivityChat.emisor : ActivityChat.receptor;
         // Comprobar si tiene foto
         if (myUser.getFotoPerfil() != null) {
             // Referencia a la foto
@@ -100,25 +102,6 @@ public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHold
         mListener = listener;
     }
 
-    // Devuelve la diferencia de fechas
-    public static String getDateDif(Date d1, Date d2) {
-        String dif = null;
-        try {
-            long result = d1.getTime() - d2.getTime();
-            if (result < 60000)
-                dif = "Ahora";
-            else if (result < 3600000)
-                dif = String.valueOf(result / 60000) + "m";
-            else if (result < 86400000)
-                dif = String.valueOf(result / 3600000) + "h";
-            else
-                dif = String.valueOf(result / 86400000) + "d";
-            return dif;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 
 }

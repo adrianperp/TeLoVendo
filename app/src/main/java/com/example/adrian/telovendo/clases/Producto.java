@@ -16,15 +16,12 @@ public class Producto {
     private double valoracion = -1;
     private String categoria;
     private String usuario;
-
     private String fechaPublicado;
-
     private String horaPublicado;
     private ArrayList<String> fotos = new ArrayList<String>();
 
 
     // Constructores
-
     public Producto(String nombre, String descripcion, String marca, String modelo, double precio, String categoria, String usuario, ArrayList<String> fotos) {
         this.nombre = nombre;
         this.descripcion = descripcion;

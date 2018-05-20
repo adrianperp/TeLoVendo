@@ -93,7 +93,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
         layoutUsuario = findViewById(R.id.layoutUsuario);
         //buttonChat.setEnabled(false);
 
-        // Recibiendo la posicion del conductor
+        // Recibiendo la posicion del producto
         posicionProducto = getIntent().getIntExtra("posicion", -1);
         p = ActivityListarCategoria.listaProductos.get(posicionProducto);
 
@@ -108,6 +108,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
             cargarInterfaz();
         }
 
+        // Abrimos chat pasando los 2 usuarios
         buttonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +129,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
         });
     }
 
-    // Metodo que asigna el viewpager con las fotos
+    // Metodo que asigna el viewpager con las fotos - GALERIA DE FOTOS
     private void getUrlsFotos (){
         final int totalFotos = p.getFotos().size();
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -141,7 +142,6 @@ public class ActivityDetallesProducto extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri downloadUrl) {
                     listDone.add(downloadUrl.toString());
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>" + downloadUrl.toString());
                     if (listDone.size() == totalFotos) {
                         // Asignamos las imagenes al viewpager
                         String[] fotos = listDone.toArray(new String[listDone.size()]);
@@ -157,7 +157,7 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     protected void getUsuario(String email) {
         databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_USUARIOS);
         Query q = databaseRef.orderByChild(firebaseUtils.CAMPO_EMAIL).equalTo(email);
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
@@ -178,7 +178,9 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     }
 
     protected void actualizarDatosUsuario(Usuario u) {
-        textNombreUsuario.setText(u.getNombre() + " " + u.getApellidos());
+        // Mostrar nombre y un apellido
+        String nombreUsuario = u.getNombre() + " " + (u.getApellidos() + " ").split(" ")[0];
+        textNombreUsuario.setText(nombreUsuario);
 
         if (u.getFotoPerfil() != null) {
             StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + u.getFotoPerfil());

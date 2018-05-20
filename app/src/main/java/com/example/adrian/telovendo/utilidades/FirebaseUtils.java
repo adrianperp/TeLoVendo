@@ -73,7 +73,7 @@ public class FirebaseUtils {
         this.context = context;
     }
 
-    // ------------------------------------------ Metodos ------------------------------------------
+    // ------------------------------------------ Metodos Usuarios ------------------------------------------
     public void anyadirUsuario(Usuario u){
         // Referencia a la base de datos
         databaseRef = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS);
@@ -92,64 +92,20 @@ public class FirebaseUtils {
     // Metodo que actualiza los chats de dos usuarios
     public void actualizarChatsUsuarios(final Usuario u1, final Usuario u2) {
         // Creamos la referencia a la base de datos
-        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS);
-        Query q1 = databaseRef.orderByChild(CAMPO_EMAIL).equalTo(u1.getEmail());
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                String clave;
-                for (DataSnapshot datasnap : snapshot.getChildren()){
-                    //obtenemos la clave
-                    clave = datasnap.getKey();
-                    //accediendo al conductor con la clave
-                    databaseRef.child(clave).child(CAMPO_LISTA_CHATS).setValue(u1.getListaChats());
-                }
-            }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS).child(u1.getIdUsuario()).child(CAMPO_LISTA_CHATS);
+        ref.setValue(u1.getListaChats());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS).child(u2.getIdUsuario()).child(CAMPO_LISTA_CHATS);
+        ref2.setValue(u2.getListaChats());
 
-            }
-        });
-
-        Query q2 = databaseRef.orderByChild(CAMPO_EMAIL).equalTo(u2.getEmail());
-        databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                String clave;
-                for (DataSnapshot datasnap : snapshot.getChildren()){
-                    //obtenemos la clave
-                    clave = datasnap.getKey();
-                    //accediendo al conductor con la clave
-                    databaseRef.child(clave).child(CAMPO_LISTA_CHATS).setValue(u2.getListaChats());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         System.out.println("-------------Usuarios actualizados-------------");
     }
 
     public void anyadirChat(Chat chat) {
         databaseRef = FirebaseDatabase.getInstance().getReference(NODO_CHATS);
-        String key = databaseRef.getKey();
+        String key = chat.getChatId();
         databaseRef.child(key).setValue(chat);
         System.out.println("Chat anyadido");
-    }
-
-    public void subirProducto(Producto p){
-        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_PRODUCTOS);
-        String key = databaseRef.push().getKey();
-        databaseRef.child(key).setValue(p);
-    }
-
-    public void subirProductoBorrador(Producto p){
-        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_PRODUCTOS_BORRADOR);
-        String key = databaseRef.push().getKey();
-        databaseRef.child(key).setValue(p);
     }
 
     public void subirImagenUsuario(String nombreArchivo, Uri uri){
@@ -161,7 +117,6 @@ public class FirebaseUtils {
         fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                System.out.println(">>>>>>>>>>>>>>>Imagen subid en storage");
                 ActivityCuenta.cargarFotoPerfil();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -170,6 +125,19 @@ public class FirebaseUtils {
                 Toast.makeText(context, "La subida de imágenes no se ha podido completar", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    // ------------------------------------------ Metodos Productos ------------------------------------------
+
+    public void subirProducto(Producto p){
+        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_PRODUCTOS);
+        String key = databaseRef.push().getKey();
+        databaseRef.child(key).setValue(p);
+    }
+
+    public void subirProductoBorrador(Producto p){
+        databaseRef = FirebaseDatabase.getInstance().getReference(NODO_PRODUCTOS_BORRADOR);
+        String key = databaseRef.push().getKey();
+        databaseRef.child(key).setValue(p);
     }
 
     public void subirImagenesProductos(ArrayList<Uri> listaUris, ArrayList<String> listaNombres){

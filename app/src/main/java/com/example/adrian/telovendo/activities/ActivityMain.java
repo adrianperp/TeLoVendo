@@ -182,12 +182,12 @@ public class ActivityMain extends AppCompatActivity
 
     // rellenar lista de categorias
     public List<Categoria> obtenerCategorias(){
-        int[] idsFotos = {0, R.drawable.cat_motor, R.drawable.cat_hogar, R.drawable.cat_electronica,
-                R.drawable.cat_juegos, R.drawable.cat_hobbies, R.drawable.cat_ropa, R.drawable.cat_libros,
-                R.drawable.cat_infantil, R.drawable.cat_animales, R.drawable.cat_electrodomesticos};
+        int[] idsFotos = {0, R.drawable.cat_motor2, R.drawable.cat_hogar2, R.drawable.cat_electronica2,
+                R.drawable.cat_juegos2, R.drawable.cat_hobbies2, R.drawable.cat_ropa2, R.drawable.cat_infantil2,
+                R.drawable.cat_animales2, R.drawable.cat_electrodomesticos2, R.drawable.cat_libros2};
         int[] idsColores = {0, R.color.catRojo, R.color.catAzul, R.color.catAmarillo,
-                R.color.catMorado, R.color.catRojo, R.color.catAmarillo, R.color.catMarron,
-                R.color.catAzul, R.color.catGris, R.color.catVerde};
+                R.color.catMorado, R.color.catEsmeralda, R.color.catRosa, R.color.catAzul,
+                R.color.catGris, R.color.catMorado, R.color.catAzul};
         List<Categoria> listaCategorias = new ArrayList<Categoria>();
         String[] arrayCat = getResources().getStringArray(R.array.array_categorias);
 

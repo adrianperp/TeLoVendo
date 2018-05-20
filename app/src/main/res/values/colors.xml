@@ -14,12 +14,14 @@
     <color name="azulOscuro">#1a7884</color>
 
     <!-- Categorias -->
-    <color name="catRojo">#e6a7a7</color>
-    <color name="catMarron">#d5b492</color>
-    <color name="catAmarillo">#fffc9d</color>
-    <color name="catAzul">#c7eeff</color>
-    <color name="catGris">#e8e8e8</color>
-    <color name="catMorado">#caabfc</color>
-    <color name="catVerde">#dafeec</color>
+    <color name="catRojo">#f8c1ba</color>
+    <color name="catNaranja">#f6d2ae</color>
+    <color name="catAmarillo">#faeba6</color>
+    <color name="catAzul">#b7dbf3</color>
+    <color name="catGris">#d2d8d8</color>
+    <color name="catMorado">#d9bde3</color>
+    <color name="catVerde">#b3e4c7</color>
+    <color name="catRosa">#ffc3f4</color>
+    <color name="catEsmeralda">#ace8dc</color>
 
 </resources>

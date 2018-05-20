@@ -17,7 +17,12 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+
+import static com.example.adrian.telovendo.utilidades.FechasUtils.getDate;
+import static com.example.adrian.telovendo.utilidades.FechasUtils.getDateDif;
 
 public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHolder> {
 
@@ -29,6 +34,7 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
         private TextView textNombreLista;
         private TextView textDescripcionLista;
         private TextView textPrecioLista;
+        private TextView textFechaPublicacionItem;
 
         public ViewHolder(View v) {
             super(v);
@@ -36,25 +42,36 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ViewHo
             textNombreLista = v.findViewById(R.id.textNombreItem);
             textDescripcionLista = v.findViewById(R.id.textDescripcionItem);
             textPrecioLista = v.findViewById(R.id.textPrecioItem);
+            textFechaPublicacionItem = v.findViewById(R.id.textFechaPublicacionItem);
         }
 
         public void bind(Producto p) {
             // Comprobar que el texto no se exceda del maximo
             String nombre = p.getNombre();
             String descripcion = p.getDescripcion();
-            if (nombre.length() > 15) { // 15 carac
-                textNombreLista.setText(nombre.substring(0,15) + "...");
+            // Nombre
+            if (nombre.length() > 14) { // 14 carac
+                textNombreLista.setText(nombre.substring(0,14) + "...");
             }
             else {
                 textNombreLista.setText(nombre);
             }
-            if (descripcion.length() > 160) {// 160 carac
-                textDescripcionLista.setText(descripcion.substring(0, 160) + "...");
+            // Descripcion
+            if (descripcion.length() > 82) {// 82 carac
+                textDescripcionLista.setText(descripcion.substring(0, 82) + "...");
             }
             else {
                 textDescripcionLista.setText(descripcion);
             }
+            // Precio
             textPrecioLista.setText(String.valueOf(p.getPrecio()) + " €");
+            // Fecha
+            try {
+                textFechaPublicacionItem.setText(getDateDif(new Date(), getDate(p.getFechaPublicado(), p.getHoraPublicado())));
+            }
+            catch (ParseException e) {
+                e.printStackTrace();
+            }
             // Asiganmos la foto al item
             StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_PRODUCTOS + p.getFotos().get(0));
             Glide.with(ActivityListarCategoria.context)
