@@ -1,5 +1,6 @@
 package com.example.adrian.telovendo.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -253,5 +254,23 @@ public class ActivityMain extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_buscar:
+                startActivity(new Intent(ActivityMain.this, ActivityBuscar.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

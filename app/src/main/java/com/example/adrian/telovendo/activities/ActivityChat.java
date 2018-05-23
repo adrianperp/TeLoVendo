@@ -61,15 +61,6 @@ public class ActivityChat extends AppCompatActivity {
         editMensaje = findViewById(R.id.editMensaje);
         fab = findViewById(R.id.fabSend);
 
-        // RecyclerView
-        recyclerChat = findViewById(R.id.recyclerChat);
-        mAdapter = new MensajeAdapter(listaMensajes);
-        layoutManager = new LinearLayoutManager(this);
-        layoutManager.setReverseLayout(true); // Que la lista apunte siempre al ultimo elemento
-        recyclerChat.setLayoutManager(layoutManager);
-        recyclerChat.setItemAnimator(new DefaultItemAnimator());
-        recyclerChat.setAdapter(mAdapter);
-
         // Recibiendo el chat
         chat = (Chat)getIntent().getSerializableExtra("chat");
 
@@ -86,6 +77,15 @@ public class ActivityChat extends AppCompatActivity {
             // Despues se asigna
             cargarChat();
         }
+
+        // RecyclerView
+        recyclerChat = findViewById(R.id.recyclerChat);
+        mAdapter = new MensajeAdapter(listaMensajes);
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true); // Que la lista apunte siempre al ultimo elemento
+        recyclerChat.setLayoutManager(layoutManager);
+        recyclerChat.setItemAnimator(new DefaultItemAnimator());
+        recyclerChat.setAdapter(mAdapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

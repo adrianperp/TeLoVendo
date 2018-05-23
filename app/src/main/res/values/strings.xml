@@ -67,6 +67,7 @@
     <string name="editCiudadCuenta">Ciudad</string>
     <string name="action_cuenta_guardar">Guardar</string>
     <string name="drawer_logout">Cerrar sesión</string>
+    <string name="spinner_provincias">Provincia</string>
 
 
 </resources>

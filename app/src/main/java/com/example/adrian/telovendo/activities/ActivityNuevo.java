@@ -246,7 +246,7 @@ public class ActivityNuevo extends AppCompatActivity {
         if (modelo.isEmpty()) {
             modelo = null;
         }
-        return new Producto(nombre, descripcion, marca, modelo, precio, categoria, usuario.getEmail(), getFileNameList());
+        return new Producto(nombre, descripcion, marca, modelo, precio, categoria, usuario.getEmail(), usuario.getCiudad(), getFileNameList());
     }
 
     // Metodo que retorna los nombres de las fotos para la creacion del producto

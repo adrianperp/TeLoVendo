@@ -16,13 +16,14 @@ public class Producto {
     private double valoracion = -1;
     private String categoria;
     private String usuario;
+    private String provincia;
     private String fechaPublicado;
     private String horaPublicado;
     private ArrayList<String> fotos = new ArrayList<String>();
 
 
     // Constructores
-    public Producto(String nombre, String descripcion, String marca, String modelo, double precio, String categoria, String usuario, ArrayList<String> fotos) {
+    public Producto(String nombre, String descripcion, String marca, String modelo, double precio, String categoria, String usuario, String provincia, ArrayList<String> fotos) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.marca = marca;
@@ -30,6 +31,7 @@ public class Producto {
         this.precio = precio;
         this.categoria = categoria;
         this.usuario = usuario;
+        this.provincia = provincia;
         this.fotos = fotos;
     }
     public Producto(){
@@ -114,6 +116,14 @@ public class Producto {
 
     public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 
     public ArrayList<String> getFotos() {

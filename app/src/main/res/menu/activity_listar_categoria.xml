@@ -2,10 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_buscar"
-        android:title="Buscar"
-        android:icon="@drawable/ic_action_search"
-        app:showAsAction="always|collapseActionView"
+        android:id="@+id/action_ordenar"
+        android:title="Ordenar"
+        android:icon="@drawable/ic_action_order"
+        app:showAsAction="ifRoom|withText"
         android:orderInCategory="100"/>
-
 </menu>
