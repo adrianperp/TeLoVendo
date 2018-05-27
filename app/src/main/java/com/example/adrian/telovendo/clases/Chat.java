@@ -51,9 +51,11 @@ public class Chat implements Serializable {
         String email1 = this.listaParticipantes.get(0).getEmail();
         String email2 = this.listaParticipantes.get(1).getEmail();
 
-        if ((email1.equals(emisor.getEmail()) || email1.equals(receptor.getEmail()) &&
-                email2.equals(emisor.getEmail()) || email2.equals(receptor.getEmail())))
+        if ((email1.equals(emisor.getEmail()) || email1.equals(receptor.getEmail())) &&
+                (email2.equals(emisor.getEmail()) || email2.equals(receptor.getEmail()))) {
             return true;
+        }
+
         return false;
     }
 }

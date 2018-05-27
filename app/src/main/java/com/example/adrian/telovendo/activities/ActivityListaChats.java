@@ -74,15 +74,17 @@ public class ActivityListaChats extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listaChats.clear();
                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    System.out.println("KEY------------------" + snap.getKey());
                     Chat c = snap.getValue(Chat.class);
-
-                    // Carga chats con mensajes
-                    if (!c.getListaMensajes().isEmpty()) {
-                        listaChats.add(c);
+                    // Comprobar que chats pertenecen al usuario
+                    if (ActivityMain.user.getListaChats().contains(c.getChatId())) {
+                        // Carga chats con mensajes
+                        if (!c.getListaMensajes().isEmpty()) {
+                            listaChats.add(c);
+                        }
                     }
                 }
                 chatAdapter.notifyDataSetChanged();
-
             }
 
             @Override

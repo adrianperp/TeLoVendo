@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.clases.Chat;
@@ -75,7 +76,10 @@ public class ActivityChat extends AppCompatActivity {
             receptor = (Usuario)getIntent().getSerializableExtra("receptor");
             // Comprobaremos si existe chat
             // Despues se asigna
-            cargarChat();
+            if (emisor != null && receptor != null)
+                cargarChat();
+            else
+                Toast.makeText(context, R.string.toast_problema_carga_usuarios, Toast.LENGTH_SHORT).show();
         }
 
         // RecyclerView

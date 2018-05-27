@@ -117,5 +117,5 @@
     <string name="toast_subida_fallida">La subida de imágenes no se ha podido completar</string>
     <string name="toast_imagen_nosubida">Imagen no subida</string>
     <string name="toast_excepcion">Ha ocurrido una excepción</string>
-
+    <string name="toast_problema_carga_usuarios">Hubo un problema cargando los usuarios</string>
 </resources>

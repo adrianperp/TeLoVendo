@@ -83,6 +83,8 @@ public class ActivityCuentaEditar extends AppCompatActivity {
 
     protected void actualizarUsuario() {
         final Usuario newUser = getUsuario();
+        // Se asigna el id manualmente
+        newUser.setIdUsuario(ActivityMain.user.getIdUsuario());
         user = newUser;
 
         // Se actualiza el usuario en la base de datos

@@ -85,7 +85,7 @@
     <string name="contentDescImagenProducto">Product image</string>
 
     <!-- Drawer -->
-    <string name="drawer_logout">Logging out</string>
+    <string name="drawer_logout">Log out</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -117,5 +117,6 @@
     <string name="toast_subida_fallida">The images upload could not be finished</string>
     <string name="toast_imagen_nosubida">The image could not be uploaded</string>
     <string name="toast_excepcion">An exception has occurred</string>
+    <string name="toast_problema_carga_usuarios">There was a problem getting the users</string>
 
 </resources>
