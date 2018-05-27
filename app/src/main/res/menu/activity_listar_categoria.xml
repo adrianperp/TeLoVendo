@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_ordenar"
+        android:orderInCategory="1"
         android:title="Ordenar"
-        android:icon="@drawable/ic_action_order"
-        app:showAsAction="ifRoom|withText"
-        android:orderInCategory="100"/>
+        app:actionViewClass="android.widget.Spinner"
+        app:showAsAction="always" />
 </menu>

@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">TeLoVendo</string>
+    <string name="title_activity_main">ActivityMain</string>
+
+    <!-- Activity Main -->
+    <string name="title_categorias">Categorías</string>
+    <!-- Activity Login -->
+    <string name="userLogin">Usuario</string>
+    <string name="passwordLogin">Contraseña</string>
+    <string name="textIniciarLogin">Iniciar sesión</string>
+    <string name="buttonAccederLogin">Acceder</string>
+    <string name="buttonRegisterLogin">Regístrate</string>
+    <string name="title_progress_login">Iniciando sesion...</string>
+
+    <!-- Activity Buscar -->
+    <string name="textCamposOpcionales">*Todos los campos son opcionales</string>
+    <string name="textQueBuscas">¿Qué estás buscando?</string>
+    <string name="textPrecio">Precio</string>
+    <string name="textDesde">Desde</string>
+    <string name="textHasta">Hasta</string>
+    <string name="textCategoria">Categoria</string>
+    <string name="textProvincia">Provincia</string>
+    <string name="textMarca">Marca</string>
+    <string name="textModelo">Modelo</string>
+    <string name="textBotonBuscar">Buscar</string>
+    <string name="title_activity_buscar">Buscar producto</string>
+
+    <!-- Activity Chat -->
+    <string name="textEscribeTuMensaje">Escribe aquí tu mensaje...</string>
+
+    <!-- Activity Cuenta -->
+    <string name="textVentas">Ventas</string>
+    <string name="textCompras">Compras</string>
+    <string name="title_mi_cuenta">Mi cuenta</string>
+    <string name="title_user_profile">Perfil de usuario</string>
+    <string name="text_desconocido">Desconocido</string>
+    <string name="toast_datos_usuario">No se pudieron obtener los datos del usuario</string>
+    <string name="toast_info_actualizada">Se ha actualizado la información</string>
+
+    <!-- Activity Cuenta Editar -->
+    <string name="editNombreCuenta">Nombre</string>
+    <string name="editApellidosCuenta">Apellidos</string>
+    <string name="editPaisCuenta">País</string>
+    <string name="spinner_provincias">Provincia</string>
+    <string name="title_intent_galeria">Selecciona una foto</string>
+    <string name="title_alert_descartar">Descartar cambios</string>
+    <string name="message_alert_descartar">¿Desea descartar los cambios realizados?</string>
+    <string name="respuesta_si">Sí</string>
+    <string name="respuesta_no">No</string>
+
+    <!-- Activity Detalles Producto -->
+    <string name="textValoraProducto">Valora este producto</string>
+
+    <!-- Activity Listar Categoria -->
+    <string name="title_resultados">Resultados</string>
+    <string name="toast_sin_resultados">No se han encontrado resultados</string>
+
+    <!-- Activity Nuevo -->
+    <string name="editNuevoNombre">Nombre*</string>
+    <string name="editNuevoDescripcion">Descripción*</string>
+    <string name="editNuevoMarca">Marca</string>
+    <string name="editNuevoModelo">Modelo</string>
+    <string name="editNuevoPrecio">Precio*</string>
+    <string name="spinner_categorias">Categoría</string>
+    <string name="textNuevoAnyadirFotos">Añade alguna foto</string>
+    <string name="toast_campos_vacios">Algunos campos obligatorios están vacíos</string>
+    <string name="toast_producto_subido">Producto subido</string>
+    <string name="toast_producto_guardado">El producto se ha guardado</string>
+    <string name="title_intent_galeria2">Selecciona alguna foto</string>
+    <string name="title_alert_guardar_producto">Guardar producto</string>
+    <string name="message_alert_guardar_producto">¿Desea el producto como borrador?</string>
+
+
+    <!-- Activity Registro -->
+    <string name="contentDesc">Imagen de fondo pantalla login</string>
+    <string name="textRegister">Regístrate</string>
+    <string name="nombreRegistro">Nombre</string>
+    <string name="apellidosRegistro">Apellidos</string>
+    <string name="emailRegistro">Email</string>
+    <string name="contrasenyaRegistro">Contraseña</string>
+    <string name="buttonRegister">Confirmar registro</string>
+    <string name="title_alert_registro">Registrando usuario...</string>
+
+    <!-- Item Producto -->
+    <string name="contentDescImagenProducto">Imagen del producto</string>
+
+    <!-- Drawer -->
+    <string name="drawer_logout">Cerrar sesión</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_inicio">Inicio</string>
+    <string name="drawer_notificaciones">Notificaciones</string>
+    <string name="drawer_ajustes">Ajustes</string>
+    <string name="drawer_chat">Chat</string>
+    <string name="drawer_perfil">Mi cuenta</string>
+
+    <!-- Activity Registro -->
+    <string name="toastDatosIncorrectos">Algunos campos están vacíos</string>
+    <string name="toastContrasenyaCorta">La contraseña debe contener al menos 6 caracteres</string>
+
+    <!-- Activity Login -->
+    <string name="toastErrorLogin">El usuario o la contraseña no son correctos</string>
+
+    <!-- Menus -->
+    <string name="action_publicar">Publicar</string>
+    <string name="action_editar">Editar</string>
+    <string name="action_cuenta_guardar">Guardar</string>
+
+    <!-- Otros -->
+    <string name="text_ahora">"Ahora"</string>
+    <string name="textTotalVentasCuenta">Ventas</string>
+    <string name="textTotalComprasCuenta">Compras</string>
+    <string name="textReputacionCuenta">Reputación</string>
+    <string name="toastRegistroCorrecto">Te has registrado correctamente</string>
+    <string name="toastRegistroIncorrecto">El registro ha fallado</string>
+    <string name="toast_subida_fallida">La subida de imágenes no se ha podido completar</string>
+    <string name="toast_imagen_nosubida">Imagen no subida</string>
+    <string name="toast_excepcion">Ha ocurrido una excepción</string>
+
+</resources>

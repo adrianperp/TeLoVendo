@@ -1,6 +1,11 @@
 package com.example.adrian.telovendo.clases;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+
+import static com.example.adrian.telovendo.utilidades.FechasUtils.getDate;
 
 /**
  * Created by adrian on 4/03/18.
@@ -133,4 +138,72 @@ public class Producto {
     public void setFotos(ArrayList<String> fotos) {
         this.fotos = fotos;
     }
+
+    // Comparator
+    public static Comparator<Producto> ordenarPorTituloAsc = new Comparator<Producto>(){
+        public int compare(Producto p1, Producto p2){
+            return p1.getNombre().compareTo(p2.getNombre());
+        }
+    };
+    public static Comparator<Producto> ordenarPorTituloDes = new Comparator<Producto>(){
+        public int compare(Producto p1, Producto p2){
+            return p2.getNombre().compareTo(p1.getNombre());
+        }
+    };
+    public static Comparator<Producto> ordenarPorPrecioAsc = new Comparator<Producto>(){
+        public int compare(Producto p1, Producto p2){
+            return Double.compare(p1.getPrecio(), p2.getPrecio());
+        }
+    };
+    public static Comparator<Producto> ordenarPorPrecioDes = new Comparator<Producto>(){
+        public int compare(Producto p1, Producto p2){
+            return Double.compare(p2.getPrecio(), p1.getPrecio());
+        }
+    };
+    public static Comparator<Producto> ordenarPorFechaAsc = new Comparator<Producto>(){
+        public int compare(Producto p1, Producto p2){
+            try {
+                Date d1 = getDate(p1.getFechaPublicado(), p1.getHoraPublicado());
+                Date d2 = getDate(p2.getFechaPublicado(), p2.getHoraPublicado());
+
+                if (d2.before(d1)) {
+                    return -1;
+                } else if (d2.after(d1)) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            catch (Exception e2) {
+                e2.printStackTrace();
+            }
+            return 0;
+        }
+    };
+    public static Comparator<Producto> ordenarPorFechaDes = new Comparator<Producto>(){
+        public int compare(Producto p1, Producto p2){
+            try {
+                Date d1 = getDate(p1.getFechaPublicado(), p1.getHoraPublicado());
+                Date d2 = getDate(p2.getFechaPublicado(), p2.getHoraPublicado());
+
+                if (d1.before(d2)) {
+                    return -1;
+                } else if (d1.after(d2)) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+            catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+            catch (Exception e2) {
+                e2.printStackTrace();
+            }
+            return 0;
+        }
+    };
 }

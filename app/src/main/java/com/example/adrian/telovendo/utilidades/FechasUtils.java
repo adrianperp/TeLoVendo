@@ -1,5 +1,7 @@
 package com.example.adrian.telovendo.utilidades;
 
+import com.example.adrian.telovendo.R;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

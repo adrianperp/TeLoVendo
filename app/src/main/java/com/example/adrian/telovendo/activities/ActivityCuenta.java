@@ -51,9 +51,9 @@ public class ActivityCuenta extends AppCompatActivity {
 
         // Titulo toolbar
         if(usuario.getEmail().equals(ActivityMain.firebaseUser.getEmail()))
-            getSupportActionBar().setTitle("Mi cuenta");
+            getSupportActionBar().setTitle(R.string.title_mi_cuenta);
         else
-            getSupportActionBar().setTitle("Perfil de usuario");
+            getSupportActionBar().setTitle(R.string.title_user_profile);
 
         textNombre = findViewById(R.id.textNombreCuenta);
         textEmail = findViewById(R.id.textEmailCuenta);
@@ -76,7 +76,7 @@ public class ActivityCuenta extends AppCompatActivity {
             textNombre.setText(nombre + " " + apellidos);
             textEmail.setText(usuario.getEmail());
             if (pais == null) {
-                textPaisCiudad.setText("Desconocido");
+                textPaisCiudad.setText(R.string.text_desconocido);
             } else if (ciudad == null) {
                 textPaisCiudad.setText(pais);
             } else {
@@ -84,7 +84,7 @@ public class ActivityCuenta extends AppCompatActivity {
             }
         }
         else {
-            Toast.makeText(this, "No se pudieron obtener los datos del usuario", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_datos_usuario, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -135,11 +135,10 @@ public class ActivityCuenta extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            Toast.makeText(this, "Se ha actualizado la información", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_info_actualizada, Toast.LENGTH_SHORT).show();
             usuario = (Usuario)data.getSerializableExtra("usuario");
             // Recargar interfaz
             cargarInterfaz();
-            System.out.println(">>>>>>>>>>>>>Carga la interfaz");
         }
     }
 }

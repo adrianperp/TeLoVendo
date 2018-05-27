@@ -108,7 +108,7 @@ public class ActivityChat extends AppCompatActivity {
         }
     }
 
-    // Actualiza el chat
+    // Actualiza el chat a partir de los participantes
     public void cargarChat() {
         databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS);
         databaseRef.addValueEventListener(new ValueEventListener() {
@@ -118,12 +118,13 @@ public class ActivityChat extends AppCompatActivity {
                 for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
                     ch = datasnap.getValue(Chat.class);
 
-                    if(ch.isFrom(emisor, receptor)) {
+                    if(ch != null && ch.isFrom(emisor, receptor)) {
                         chat = ch;
                         getSupportActionBar().setTitle(getTituloActionBar());
                         break;
                     }
                 }
+                // Si no existe se crea un chat nuevo
                 if (chat == null) {
                     chat = new Chat(emisor, receptor);
                     // Se anyade a la base de datos
@@ -178,8 +179,9 @@ public class ActivityChat extends AppCompatActivity {
     protected void enviarMensaje() {
         String mensaje = editMensaje.getText().toString().trim();
         if (!mensaje.isEmpty()) {
+            // Creamos referencia a la lista de mensajes del chat
             databaseRef = FirebaseDatabase.getInstance().getReference(firebaseUtils.NODO_CHATS).child(chat.getChatId()).child(firebaseUtils.CAMPO_LISTA_MENSAJES);
-            listaMensajes.add(0, new Mensaje(mensaje, new Date(), emisor.getEmail()));
+            listaMensajes.add(0, new Mensaje(mensaje, new Date(), ActivityMain.user.getEmail(), ActivityMain.user.getFotoPerfil()));
 
             databaseRef.setValue(listaMensajes);
         }

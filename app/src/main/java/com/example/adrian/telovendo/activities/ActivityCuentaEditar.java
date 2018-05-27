@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -37,7 +38,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
     private static EditText editNombreCuenta;
     private static EditText editApellidosCuenta;
     private static EditText editPaisCuenta;
-    private static EditText editCiudadCuenta;
+    private static Spinner spinnerProvinciaCuenta;
 
     private static FirebaseUtils firebaseUtils;
     private static Usuario user;
@@ -57,7 +58,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle("Mi cuenta");
+        getSupportActionBar().setTitle(R.string.title_mi_cuenta);
 
         firebaseUtils = new FirebaseUtils(ActivityCuentaEditar.this);
         context = ActivityCuentaEditar.this;
@@ -68,7 +69,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         editNombreCuenta = findViewById(R.id.editNombreCuenta);
         editApellidosCuenta = findViewById(R.id.editApellidosCuenta);
         editPaisCuenta = findViewById(R.id.editPaisCuenta);
-        editCiudadCuenta = findViewById(R.id.editCiudadCuenta);
+        spinnerProvinciaCuenta = findViewById(R.id.spinnerEditProvincia);
 
         cargarDatosInterfaz();
 
@@ -96,7 +97,6 @@ public class ActivityCuentaEditar extends AppCompatActivity {
                     clave = ds.getKey();
                     // Actualizamos el usuario
                     databaseRef.child(clave).setValue(newUser);
-                    System.out.println(">>>>>>>>>>>USUARIO ACTUALIZADO");
                 }
             }
 
@@ -108,7 +108,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         });
 
         // Se sube la nueva foto
-        if (newUser.getFotoPerfil() != null) {
+        if (newUser.getFotoPerfil() != null && uri != null) {
             firebaseUtils.subirImagenUsuario(newUser.getFotoPerfil(), uri);
         }
 
@@ -122,14 +122,13 @@ public class ActivityCuentaEditar extends AppCompatActivity {
 
     // Retorna un usuario a partir de la informacion proporcionada por el usuario
     private static Usuario getUsuario(){
-        System.out.println("----------------entra en get usuario-------------");
         Usuario u = new Usuario();
         String email = user.getEmail();
         String contrasenya = user.getContrasenya();
         String nombre = editNombreCuenta.getText().toString().trim();
         String apellidos = editApellidosCuenta.getText().toString().trim();
         String pais = editPaisCuenta.getText().toString().trim();
-        String ciudad = editCiudadCuenta.getText().toString().trim();
+        String ciudad = spinnerProvinciaCuenta.getSelectedItem().toString();
 
         // Construimos el usuario
         u.setEmail(email);
@@ -146,6 +145,9 @@ public class ActivityCuentaEditar extends AppCompatActivity {
             String foto = firebaseUtils.getFileName(uri);
             u.setFotoPerfil(foto);
         }
+        else if(ActivityMain.user.getFotoPerfil() != null) {
+            u.setFotoPerfil(ActivityMain.user.getFotoPerfil());
+        }
 
         return u;
     }
@@ -154,7 +156,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PIC_CODE);
+        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.title_intent_galeria)), SELECT_PIC_CODE);
     }
 
     @Override
@@ -170,6 +172,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
 
     // Metodo que recoje la informacion y la anyade a la activity
     protected void cargarDatosInterfaz(){
+        String[] provincias = getResources().getStringArray(R.array.array_provincias2);
         if (user != null) {
             String nombre = user.getNombre();
             String apellidos = user.getApellidos();
@@ -193,8 +196,17 @@ public class ActivityCuentaEditar extends AppCompatActivity {
             }
             if (ciudad != null) {
                 ciudad = ciudad.trim().replaceAll("\\s+", " ");
-                if (!ciudad.isEmpty())
-                    editCiudadCuenta.setText(ciudad);
+                if (!ciudad.isEmpty()) {
+                    // Se busca la provincia en el array
+                    int pos = 0;
+                    for (int i = 0; i < provincias.length; i++) {
+                        if (provincias[i] != null && provincias[i].equalsIgnoreCase(ciudad)) {
+                            pos = i;
+                        }
+                    }
+                    spinnerProvinciaCuenta.setSelection(pos);
+
+                }
             }
             if (foto != null) {
                 StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + user.getFotoPerfil());
@@ -248,7 +260,7 @@ public class ActivityCuentaEditar extends AppCompatActivity {
         String nuevoNombre = editNombreCuenta.getText().toString();
         String nuevoApellidos = editApellidosCuenta.getText().toString();
         String nuevoPais = editPaisCuenta.getText().toString();
-        String nuevoCiudad = editCiudadCuenta.getText().toString();
+        String nuevoCiudad = spinnerProvinciaCuenta.getSelectedItem().toString();
         if (!nombre.equals(nuevoNombre) || !apellidos.equals(nuevoApellidos)
                 || !pais.equals(nuevoPais) || !ciudad.equals(nuevoCiudad) ||
                 uri != null){
@@ -259,15 +271,15 @@ public class ActivityCuentaEditar extends AppCompatActivity {
 
     public void mostrarAviso() {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setTitle("Descartar cambios");
-        alert.setMessage("¿Desea descartar los cambios realizados?");
-        alert.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.title_alert_descartar);
+        alert.setMessage(R.string.message_alert_descartar);
+        alert.setPositiveButton(R.string.respuesta_si, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
             }
         });
-        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.respuesta_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

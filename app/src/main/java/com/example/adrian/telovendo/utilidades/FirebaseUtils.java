@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.activities.ActivityCuenta;
 import com.example.adrian.telovendo.activities.ActivityCuentaEditar;
 import com.example.adrian.telovendo.activities.ActivityMain;
@@ -97,34 +98,33 @@ public class FirebaseUtils {
 
         DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference(NODO_USUARIOS).child(u2.getIdUsuario()).child(CAMPO_LISTA_CHATS);
         ref2.setValue(u2.getListaChats());
-
-        System.out.println("-------------Usuarios actualizados-------------");
     }
 
     public void anyadirChat(Chat chat) {
         databaseRef = FirebaseDatabase.getInstance().getReference(NODO_CHATS);
         String key = chat.getChatId();
         databaseRef.child(key).setValue(chat);
-        System.out.println("Chat anyadido");
     }
 
     public void subirImagenUsuario(String nombreArchivo, Uri uri){
         String dir = STORAGE_PATH_USUARIOS;
 
-        StorageReference mStorage = FirebaseStorage.getInstance().getReference();
-        StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
+        if (uri != null) {
+            StorageReference mStorage = FirebaseStorage.getInstance().getReference();
+            StorageReference fileToUpload = mStorage.child(dir).child(nombreArchivo);
 
-        fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                ActivityCuenta.cargarFotoPerfil();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "La subida de imágenes no se ha podido completar", Toast.LENGTH_SHORT).show();
-            }
-        });
+            fileToUpload.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ActivityCuenta.cargarFotoPerfil();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, R.string.toast_subida_fallida, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
     // ------------------------------------------ Metodos Productos ------------------------------------------
 
@@ -166,7 +166,7 @@ public class FirebaseUtils {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
-                        Toast.makeText(context, "Imagen no subida", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.toast_imagen_nosubida, Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -180,7 +180,7 @@ public class FirebaseUtils {
         }
         catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Ha ocurrido una excepción", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.toast_excepcion, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -210,7 +210,7 @@ public class FirebaseUtils {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
-                        Toast.makeText(context, "Imagen no subida", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.toast_imagen_nosubida, Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -224,7 +224,7 @@ public class FirebaseUtils {
         }
         catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Ha ocurrido una excepción", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.toast_excepcion, Toast.LENGTH_SHORT).show();
         }
     }
 

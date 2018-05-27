@@ -1,81 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="40dp"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    android:paddingTop="20dp">
+    android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imagenFotoCuentaEditar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_weight="1"
-        android:src="@drawable/avatar" />
-
-    <android.support.design.widget.TextInputLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/editNombreCuenta"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:ems="10"
-            android:hint="@string/editNombreCuenta"
-            android:inputType="textPersonName" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-    </android.support.design.widget.TextInputLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagenFotoCuentaEditar"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
+                android:layout_margin="30dp"
+                android:src="@drawable/avatar" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/editApellidosCuenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:ems="10"
-            android:hint="@string/editApellidosCuenta"
-            android:inputType="textPersonName" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/editPaisCuenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:ems="10"
-            android:hint="@string/editPaisCuenta"
-            android:inputType="textPersonName" />
-
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/editNombreCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:ems="10"
+                android:hint="@string/editNombreCuenta"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textPersonName" />
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/editApellidosCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/editApellidosCuenta"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/editCiudadCuenta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:ems="10"
-            android:hint="@string/editCiudadCuenta"
-            android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/editPaisCuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/editPaisCuenta"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textPersonName" />
 
-    </android.support.design.widget.TextInputLayout>
+            <Spinner
+                android:id="@+id/spinnerEditProvincia"
+                style="@style/estiloEditText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/cardview_background"
+                android:entries="@array/array_provincias2"
+                android:paddingLeft="20dp"
+                android:prompt="@string/spinner_provincias"
+                android:spinnerMode="dialog" />
 
-</LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

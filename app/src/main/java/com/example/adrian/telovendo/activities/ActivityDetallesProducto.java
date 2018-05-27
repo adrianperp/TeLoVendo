@@ -45,7 +45,6 @@ public class ActivityDetallesProducto extends AppCompatActivity {
     private Producto p;
     private static Usuario u;
     private static Context context;
-    private ArrayList<Chat> listaChats;
 
     // Views
     private TextView textNombreDetalles;
@@ -78,7 +77,6 @@ public class ActivityDetallesProducto extends AppCompatActivity {
 
         firebaseUtils = new FirebaseUtils(ActivityDetallesProducto.this);
         context = ActivityDetallesProducto.this;
-        listaChats = new ArrayList<Chat>();
 
         // Instanciamos las views
         textNombreDetalles = findViewById(R.id.textNombreDetalle);
@@ -171,12 +169,12 @@ public class ActivityDetallesProducto extends AppCompatActivity {
 
             }
         });
-        // Activamos boton chat
+    }
+
+    // Activamos boton chat
         /*if (u != null && ActivityMain.user.getEmail().equals(u.getEmail())) {
             buttonChat.setEnabled(true);
         }*/
-    }
-
     protected void actualizarDatosUsuario(Usuario u) {
         // Mostrar nombre y un apellido
         String nombreUsuario = u.getNombre() + " " + (u.getApellidos() + " ").split(" ")[0];

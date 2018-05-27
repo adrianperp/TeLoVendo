@@ -80,7 +80,7 @@ public class ActivityRegistro extends AppCompatActivity {
         }
 
         // Al loguearse se muestra un progressDialog
-        progressDialog.setMessage("Registrando usuario...");
+        progressDialog.setMessage(getResources().getString(R.string.title_alert_registro));
         progressDialog.show();
 
         // Registro de nuevo usuario con email y contrasenya
@@ -95,8 +95,6 @@ public class ActivityRegistro extends AppCompatActivity {
                             // Anyadimos el nuevo usuario a la base de datos
                             String idUsuario = UUID.randomUUID().toString();
                             firebaseUtils.anyadirUsuario(new Usuario(idUsuario, nombre, apellidos, email, contrasenya));
-                            // Lo logueamos
-                            //firebaseUtils.buscarUsuarioEmail(email);
                             // Accedemos a la activity main
                             startActivity(new Intent(getApplicationContext(), ActivityMain.class));
                         }

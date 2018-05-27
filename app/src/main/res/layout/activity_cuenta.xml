@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:text="Chema Martínez"
                 android:textColor="#fff"
                 android:textSize="21sp"
                 android:textStyle="bold" />
@@ -69,7 +68,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ventas" />
+                android:text="@string/textVentas" />
 
             <TextView
                 android:id="@+id/textNumVentasCuenta"
@@ -91,7 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Compras" />
+                android:text="@string/textCompras" />
 
             <TextView
                 android:id="@+id/textNumComprasCuenta"
@@ -130,8 +129,7 @@
             <TextView
                 android:id="@+id/textEmailCuenta"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="chemamartinez@gmail.com" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -152,12 +150,10 @@
             <TextView
                 android:id="@+id/textPaisCiudadCuenta"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="España, Madrid" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

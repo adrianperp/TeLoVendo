@@ -104,7 +104,7 @@ public class ActivityNuevo extends AppCompatActivity {
                     anyadirProducto();
                 }
                 else {
-                    Toast.makeText(ActivityNuevo.this, "Algunos campos obligatorios están vacíos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityNuevo.this, R.string.toast_campos_vacios, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case android.R.id.home:
@@ -141,7 +141,7 @@ public class ActivityNuevo extends AppCompatActivity {
         firebaseUtils.subirImagenesProductos(listaUris, p.getFotos());
         // Subimos el producto a la base de datos
         firebaseUtils.subirProducto(p);
-        Toast.makeText(this, "Producto subido", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_producto_subido, Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -154,7 +154,7 @@ public class ActivityNuevo extends AppCompatActivity {
         firebaseUtils.subirImagenesProductosBorrador(listaUris, p.getFotos());
         // Subimos el producto a la base de datos
         firebaseUtils.subirProductoBorrador(p);
-        Toast.makeText(this, "El producto se ha guardado", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.toast_producto_guardado, Toast.LENGTH_SHORT).show();
     }
 
     // Metodo que abre la galeria para la seleccion de imagenes
@@ -163,7 +163,7 @@ public class ActivityNuevo extends AppCompatActivity {
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Selecciona alguna imagen"), REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent,getResources().getString(R.string.title_intent_galeria2)), REQUEST_CODE);
     }
 
     protected void onActivityResult ( int requestCode, int resultCode, Intent data){
@@ -275,9 +275,9 @@ public class ActivityNuevo extends AppCompatActivity {
 
     public void mostrarAviso() {
         AlertDialog.Builder alert = new AlertDialog.Builder(context);
-        alert.setTitle("Guardar producto");
-        alert.setMessage("¿Desea el producto como borrador?");
-        alert.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+        alert.setTitle(R.string.title_alert_guardar_producto);
+        alert.setMessage(R.string.message_alert_guardar_producto);
+        alert.setPositiveButton(R.string.respuesta_si, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Guardar borrador
@@ -285,7 +285,7 @@ public class ActivityNuevo extends AppCompatActivity {
                 finish();
             }
         });
-        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.respuesta_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();

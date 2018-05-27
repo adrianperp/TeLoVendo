@@ -104,7 +104,7 @@ public class ActivityMain extends AppCompatActivity
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Categorías");
+        getSupportActionBar().setTitle(R.string.title_categorias);
 
         // Boton flotante
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -140,9 +140,6 @@ public class ActivityMain extends AppCompatActivity
     }
 
     public static void cargarInfoUsuarioDrawer() {
-
-        System.out.println("textNombreDrawer == null?? " + (textNombreDrawer == null));
-        System.out.println("textEmailDrawer == null?? " + (textEmailDrawer == null));
 
         if (textNombreDrawer != null) textNombreDrawer.setText(user.getNombre() + " " + user.getApellidos());
         if (textEmailDrawer != null) textEmailDrawer.setText(user.getEmail());
@@ -184,11 +181,11 @@ public class ActivityMain extends AppCompatActivity
     // rellenar lista de categorias
     public List<Categoria> obtenerCategorias(){
         int[] idsFotos = {0, R.drawable.cat_motor2, R.drawable.cat_hogar2, R.drawable.cat_electronica2,
-                R.drawable.cat_juegos2, R.drawable.cat_hobbies2, R.drawable.cat_ropa2, R.drawable.cat_infantil2,
-                R.drawable.cat_animales2, R.drawable.cat_electrodomesticos2, R.drawable.cat_libros2};
-        int[] idsColores = {0, R.color.catRojo, R.color.catAzul, R.color.catAmarillo,
-                R.color.catMorado, R.color.catEsmeralda, R.color.catRosa, R.color.catAzul,
-                R.color.catGris, R.color.catMorado, R.color.catAzul};
+                R.drawable.cat_juegos2, R.drawable.cat_hobbies2, R.drawable.cat_animales2, R.drawable.cat_infantil2,
+                R.drawable.cat_electrodomesticos2, R.drawable.cat_ropa2, R.drawable.cat_libros2};
+        int[] idsColores = {0, R.color.catNaranja, R.color.catAzul, R.color.catAmarillo,
+                R.color.catMorado, R.color.catEsmeralda, R.color.catNaranja, R.color.catAzul,
+                R.color.catAmarillo, R.color.catMorado, R.color.catVerde};
         List<Categoria> listaCategorias = new ArrayList<Categoria>();
         String[] arrayCat = getResources().getStringArray(R.array.array_categorias);
 
@@ -208,21 +205,6 @@ public class ActivityMain extends AppCompatActivity
             super.onBackPressed();
         }
     }
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
-/*
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

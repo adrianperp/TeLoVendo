@@ -9,6 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.adrian.telovendo.R;
@@ -23,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +44,8 @@ public class ActivityListarCategoria extends AppCompatActivity {
 
     DatabaseReference ref;
     FirebaseUtils firebaseUtils;
+
+    MenuItem spinnerOrdenar = null;
 
     // searchMap
     HashMap<String, String> searchMap;
@@ -77,7 +84,6 @@ public class ActivityListarCategoria extends AppCompatActivity {
         productoAdapter.setOnItemListener(new ProductoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Producto p, int position) {
-                System.out.println(">>>>>>>>>>>>>Entra en onitemclick");
                 Intent activityDetallesProducto = new Intent(ActivityListarCategoria.this, ActivityDetallesProducto.class);
                 activityDetallesProducto.putExtra("posicion", position);
                 startActivity(activityDetallesProducto);
@@ -115,7 +121,7 @@ public class ActivityListarCategoria extends AppCompatActivity {
         // METODO 2: Busqueda personalizada
         else {
             // Se anyade titulo a la toolbar
-            getSupportActionBar().setTitle("Resultados");
+            getSupportActionBar().setTitle(R.string.title_resultados);
 
             // Busqueda de productos aplicando filtros
             ref.addValueEventListener(new ValueEventListener() {
@@ -128,12 +134,11 @@ public class ActivityListarCategoria extends AppCompatActivity {
                     for (DataSnapshot datasnap : dataSnapshot.getChildren()) {
                         p = datasnap.getValue(Producto.class);
                         if (isProductoBuscado(p)) {
-                            //System.out.println("**************PRODUCTO VALIDADO " + p.getNombre());
                             listaProductos.add(p);
                         }
                     }
                     if (listaProductos.isEmpty()) {
-                        Toast.makeText(ActivityListarCategoria.this, "No se han encontrado resultados", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ActivityListarCategoria.this, R.string.toast_sin_resultados, Toast.LENGTH_SHORT).show();
                     }
                     productoAdapter.notifyDataSetChanged();
                 }
@@ -191,8 +196,52 @@ public class ActivityListarCategoria extends AppCompatActivity {
         return valid;
     }
 
+    // Ordenar lista
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_listar_categoria, menu);
+
+        // Adaptador para el spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.array_ordenar, R.layout.spinner_ordenar);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        spinnerOrdenar = menu.findItem(R.id.action_ordenar);
+        View view = spinnerOrdenar.getActionView();
+        if (view instanceof Spinner) {
+            final Spinner spinner = (Spinner) view;
+            spinner.setAdapter(adapter);
+
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                    switch (spinner.getSelectedItem().toString()) {
+                        case "Fecha asc.":
+                            Collections.sort(listaProductos, Producto.ordenarPorFechaAsc);
+                            break;
+                        case "Fecha des.":
+                            Collections.sort(listaProductos, Producto.ordenarPorFechaDes);
+                            break;
+                        case "Precio asc.":
+                            Collections.sort(listaProductos, Producto.ordenarPorPrecioAsc);
+                            break;
+                        case "Precio des.":
+                            Collections.sort(listaProductos, Producto.ordenarPorPrecioDes);
+                            break;
+                        case "Titulo asc.":
+                            Collections.sort(listaProductos, Producto.ordenarPorTituloAsc);
+                            break;
+                        case "Titulo des.":
+                            Collections.sort(listaProductos, Producto.ordenarPorTituloDes);
+                            break;
+                    }
+                    productoAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            });
+
+        }
 
         return super.onCreateOptionsMenu(menu);
     }

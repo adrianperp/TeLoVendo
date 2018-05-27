@@ -43,7 +43,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="120.3 €"
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
@@ -73,15 +72,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="Subaru Impreza 218cv."
                     android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/textDescripcionDetalle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Techo solar... tracción 4 ruedas... asiento recaro.. y más extras"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <View
                     android:layout_margin="10dp"
@@ -103,7 +100,6 @@
                             android:id="@+id/textCategoriaDetalle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Motor"
                             style="@style/estiloEtiqueta"/>
 
                         <TextView
@@ -111,7 +107,6 @@
                             style="@style/estiloEtiqueta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Subaru"
                             android:visibility="invisible" />
 
                         <TextView
@@ -119,7 +114,6 @@
                             style="@style/estiloEtiqueta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Impreza"
                             android:visibility="invisible" />
                     </LinearLayout>
                 </HorizontalScrollView>
@@ -140,8 +134,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Valora este producto"
-                        android:textSize="20dp"
+                        android:text="@string/textValoraProducto"
+                        android:textSize="20sp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp" />
 
@@ -187,8 +181,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Antonio G."
-                            android:textSize="22dp"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <RatingBar

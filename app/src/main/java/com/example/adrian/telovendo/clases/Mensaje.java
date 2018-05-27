@@ -7,11 +7,13 @@ public class Mensaje implements Serializable{
     private String texto;
     private Date fechaEnvio;
     private String emisor;
+    private String foto;
 
-    public Mensaje(String texto, Date fechaEnvio, String emisor) {
+    public Mensaje(String texto, Date fechaEnvio, String emisor, String foto) {
         this.texto = texto;
         this.fechaEnvio = fechaEnvio;
         this.emisor = emisor;
+        this.foto = foto;
     }
 
     public Mensaje() {
@@ -44,5 +46,13 @@ public class Mensaje implements Serializable{
 
     public void setEmisor(String emisor) {
         this.emisor = emisor;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

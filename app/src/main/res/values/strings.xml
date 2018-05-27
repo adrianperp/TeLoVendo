@@ -1,73 +1,121 @@
 <resources>
     <string name="app_name">TeLoVendo</string>
-    <string name="passwordLogin">Password</string>
-    <string name="userLogin">User</string>
-    <string name="buttonAccederLogin">Acceder</string>
-    <string name="buttonRegisterLogin">Regístrate</string>
-    <string name="contentDesc">Imagen de fondo</string>
     <string name="title_activity_main">ActivityMain</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!-- Activity Main -->
+    <string name="title_categorias">Categories</string>
+    <!-- Activity Login -->
+    <string name="userLogin">User</string>
+    <string name="passwordLogin">Password</string>
+    <string name="textIniciarLogin">Log in</string>
+    <string name="buttonAccederLogin">Access</string>
+    <string name="buttonRegisterLogin">Register</string>
+    <string name="title_progress_login">Logging in...</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="drawer_inicio">Inicio</string>
-    <string name="drawer_notificaciones">Notificaciones</string>
-    <string name="drawer_ajustes">Ajustes</string>
-    <string name="drawer_chat">Chat</string>
-    <string name="drawer_perfil">Mi cuenta</string>
+    <!-- Activity Buscar -->
+    <string name="textCamposOpcionales">*All fields are optional</string>
+    <string name="textQueBuscas">What are you looking for?</string>
+    <string name="textPrecio">Price</string>
+    <string name="textDesde">From</string>
+    <string name="textHasta">To</string>
+    <string name="textCategoria">Category</string>
+    <string name="textProvincia">Province</string>
+    <string name="textMarca">Brand</string>
+    <string name="textModelo">Model</string>
+    <string name="textBotonBuscar">Search</string>
+    <string name="title_activity_buscar">Search a product</string>
+
+    <!-- Activity Chat -->
+    <string name="textEscribeTuMensaje">Write your message here...</string>
+
+    <!-- Activity Cuenta -->
+    <string name="textVentas">Sales</string>
+    <string name="textCompras">Purchases</string>
+    <string name="title_mi_cuenta">My account</string>
+    <string name="title_user_profile">User profile</string>
+    <string name="text_desconocido">Unknown</string>
+    <string name="toast_datos_usuario">We couldn\'t get user's data</string>
+    <string name="toast_info_actualizada">The information has been updated</string>
+
+    <!-- Activity Cuenta Editar -->
+    <string name="editNombreCuenta">Name</string>
+    <string name="editApellidosCuenta">Surnames</string>
+    <string name="editPaisCuenta">Country</string>
+    <string name="spinner_provincias">City</string>
+    <string name="title_intent_galeria">Select a photo</string>
+    <string name="title_alert_descartar">Discard changes</string>
+    <string name="message_alert_descartar">Exit without saving?</string>
+    <string name="respuesta_si">Yes</string>
+    <string name="respuesta_no">No</string>
+
+    <!-- Activity Detalles Producto -->
+    <string name="textValoraProducto">Rate this product</string>
+
+    <!-- Activity Listar Categoria -->
+    <string name="title_resultados">Results</string>
+    <string name="toast_sin_resultados">No results found</string>
 
     <!-- Activity Nuevo -->
-    <string name="editNuevoNombre">Nombre*</string>
-    <string name="editNuevoDescripcion">Descripción*</string>
-    <string name="editNuevoMarca">Marca</string>
-    <string name="editNuevoModelo">Modelo</string>
-    <string name="editNuevoPrecio">Precio*</string>
-    <string name="editNuevoPeso">Peso</string>
-    <string name="botonNuevoGuardarBorrador">Guardar borrador</string>
-    <string name="botonNuevoPublicar">Publicar</string>
-    <string name="textNuevoAnyadirFotos">Añade alguna foto</string>
-    <string name="textRegister">Regístrate</string>
-    <string name="nombreRegistro">Nombre</string>
-    <string name="apellidosRegistro">Apellidos</string>
-    <string name="emailRegistro">Email</string>
-    <string name="contrasenyaRegistro">Contraseña</string>
-    <string name="buttonRegister">Confirmar registro</string>
-    <string name="textIniciarLogin">Iniciar sesión</string>
+    <string name="editNuevoNombre">Name*</string>
+    <string name="editNuevoDescripcion">Description*</string>
+    <string name="editNuevoMarca">Brand</string>
+    <string name="editNuevoModelo">Model</string>
+    <string name="editNuevoPrecio">Price*</string>
+    <string name="spinner_categorias">Category</string>
+    <string name="textNuevoAnyadirFotos">Add some pictures</string>
+    <string name="toast_campos_vacios">Some fields are empty</string>
+    <string name="toast_producto_subido">The product has been uploaded</string>
+    <string name="toast_producto_guardado">The product has been saved</string>
+    <string name="title_intent_galeria2">Select some photo</string>
+    <string name="title_alert_guardar_producto">Save product</string>
+    <string name="message_alert_guardar_producto">Save product as draft?</string>
+
 
     <!-- Activity Registro -->
-    <string name="toastDatosIncorrectos">Algunos campos están vacíos</string>
-    <string name="toastContrasenyaCorta">La contraseña debe contener al menos 6 caracteres</string>
+    <string name="contentDesc">Login background</string>
+    <string name="textRegister">Register user</string>
+    <string name="nombreRegistro">Name</string>
+    <string name="apellidosRegistro">Surnames</string>
+    <string name="emailRegistro">Email</string>
+    <string name="contrasenyaRegistro">Password</string>
+    <string name="buttonRegister">Confirm register</string>
+    <string name="title_alert_registro">Registering user...</string>
+
+    <!-- Item Producto -->
+    <string name="contentDescImagenProducto">Product image</string>
+
+    <!-- Drawer -->
+    <string name="drawer_logout">Logging out</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="drawer_inicio">Home</string>
+    <string name="drawer_notificaciones">Notifications</string>
+    <string name="drawer_ajustes">Settings</string>
+    <string name="drawer_chat">Chat</string>
+    <string name="drawer_perfil">My account</string>
+
+    <!-- Activity Registro -->
+    <string name="toastDatosIncorrectos">Some fields are empty</string>
+    <string name="toastContrasenyaCorta">The password length must be greather than 6</string>
 
     <!-- Activity Login -->
-    <string name="toastErrorLogin">El usuario o la contraseña no son correctos</string>
+    <string name="toastErrorLogin">The user or the password are wrong</string>
 
+    <!-- Menus -->
+    <string name="action_publicar">Publish</string>
+    <string name="action_editar">Edit</string>
+    <string name="action_cuenta_guardar">Save</string>
 
-    <string name="spinner_categorias">Categoría</string>
-    <string name="textNombreCuenta">Nombre</string>
-    <string name="textEmailCuenta">Email</string>
-    <string name="textSexoCuenta">Sexo</string>
-    <string name="textApellidosCuenta">Apellidos</string>
-    <string name="textPaisCuenta">País</string>
-    <string name="textCiudadCuenta">Ciudad</string>
-    <string name="textTotalVentasCuenta">Ventas</string>
-    <string name="textTotalComprasCuenta">Compras</string>
-    <string name="textReputacionCuenta">Reputación</string>
-    <string name="toastNuevo">CACA</string>
-    <string name="toastRegistroCorrecto">Te has registrado correctamente</string>
-    <string name="toastRegistroIncorrecto">El registro ha fallado</string>
-    <string name="action_editar">Editar</string>
-
-    <!-- Ruta de imagenes de productos del storage -->
-    <string name="ruta">productos/</string>
-    <string name="action_publicar">Publicar</string>
-    <string name="editNombreCuenta">Nombre</string>
-    <string name="editApellidosCuenta">Apellidos</string>
-    <string name="editPaisCuenta">País</string>
-    <string name="editCiudadCuenta">Ciudad</string>
-    <string name="action_cuenta_guardar">Guardar</string>
-    <string name="drawer_logout">Cerrar sesión</string>
-    <string name="spinner_provincias">Provincia</string>
-
+    <!-- Otros -->
+    <string name="text_ahora">Now</string>
+    <string name="textTotalVentasCuenta">Sales</string>
+    <string name="textTotalComprasCuenta">Purchases</string>
+    <string name="textReputacionCuenta">Reputation</string>
+    <string name="toastRegistroCorrecto">You registered successfully</string>
+    <string name="toastRegistroIncorrecto">The register has failed</string>
+    <string name="toast_subida_fallida">The images upload could not be finished</string>
+    <string name="toast_imagen_nosubida">The image could not be uploaded</string>
+    <string name="toast_excepcion">An exception has occurred</string>
 
 </resources>

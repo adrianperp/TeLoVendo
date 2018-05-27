@@ -36,7 +36,7 @@ public class ActivityBuscar extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Se asigna el titulo
-        getSupportActionBar().setTitle("Buscar producto");
+        getSupportActionBar().setTitle(R.string.title_activity_buscar);
 
         // Referenciamos las views
         editTextBuscar = findViewById(R.id.editTextBuscar);

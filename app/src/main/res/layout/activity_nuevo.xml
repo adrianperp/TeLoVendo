@@ -18,70 +18,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/editNuevoNombre"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="@string/editNuevoNombre"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textPersonName" />
 
-                <EditText
-                    android:id="@+id/editNuevoNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/editNuevoNombre"
-                    style="@style/estiloEditText"
-                    android:inputType="textPersonName" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/editNuevoDescripcion"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="@string/editNuevoDescripcion"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textMultiLine" />
 
-                <EditText
-                    android:id="@+id/editNuevoDescripcion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/editNuevoDescripcion"
-                    style="@style/estiloEditText"
-                    android:inputType="textMultiLine" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/editNuevoPrecio"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:hint="@string/editNuevoPrecio"
+                style="@style/estiloEditTextSearch"
+                android:inputType="numberDecimal" />
 
-                <EditText
-                    android:id="@+id/editNuevoPrecio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/editNuevoPrecio"
-                    style="@style/estiloEditText"
-                    android:inputType="numberDecimal" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/editNuevoMarca"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="@string/editNuevoMarca"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textPersonName" />
 
-                <EditText
-                    android:id="@+id/editNuevoMarca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/editNuevoMarca"
-                    style="@style/estiloEditText"
-                    android:inputType="textPersonName" />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/editNuevoModelo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/editNuevoModelo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/editNuevoModelo"
-                    style="@style/estiloEditText"
-                    android:inputType="textPersonName" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:hint="@string/editNuevoModelo"
+                style="@style/estiloEditTextSearch"
+                android:inputType="textPersonName" />
 
             <Spinner
                 android:id="@+id/spinnerNuevoCategorias"
@@ -124,13 +99,7 @@
                         android:src="@drawable/ic_button_add" />
 
                 </LinearLayout>
-
-
             </HorizontalScrollView>
-
-
         </LinearLayout>
-
-
     </ScrollView>
 </RelativeLayout>

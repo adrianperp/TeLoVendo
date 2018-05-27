@@ -26,7 +26,6 @@ public class ActivityLogin extends AppCompatActivity {
     private Button botonRegistrar;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private static FirebaseUtils firebaseUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,6 @@ public class ActivityLogin extends AppCompatActivity {
         // Creacion de un progressdialog para el inicio de sesion
         progressDialog = new ProgressDialog(this);
 
-        firebaseUtils = new FirebaseUtils(this);
-
         botonAcceder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,12 +61,6 @@ public class ActivityLogin extends AppCompatActivity {
             }
         });
 
-        //LOGUEAMOS AL USER EN PLAN GUARRO
-        editEmail.setText("user@gmail.com");
-        editContrasenya.setText("123456");
-        loginUser();
-
-
     }
 
     private void loginUser() {
@@ -85,7 +76,7 @@ public class ActivityLogin extends AppCompatActivity {
         }
 
         // Al loguearse se muestra un progressDialog
-        progressDialog.setMessage("Iniciando sesion...");
+        progressDialog.setMessage(getResources().getString(R.string.title_progress_login));
         progressDialog.show();
 
         // Inicio de sesion con email y contrasenya

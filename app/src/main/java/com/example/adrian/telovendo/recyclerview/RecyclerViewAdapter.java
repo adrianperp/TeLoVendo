@@ -61,8 +61,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.nombre.setText(listaCategorias.get(position).getNombre().toString());
         holder.foto.setImageResource(listaCategorias.get(position).getFoto());
         holder.layoutItemCategoria.setBackgroundResource(listaCategorias.get(position).getColor());
-        System.out.println("Categoria: " + listaCategorias.get(position).toString());
-
     }
 
     @Override

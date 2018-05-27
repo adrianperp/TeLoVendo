@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="*Todos los campos son opcionales"
+                android:text="@string/textCamposOpcionales"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -31,7 +31,7 @@
                 style="@style/estiloTextoSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="¿Qué estás buscando?" />
+                android:text="@string/textQueBuscas" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 style="@style/estiloTextoSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Precio" />
+                android:text="@string/textPrecio" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:hint="Desde"
+                    android:hint="@string/textDesde"
                     android:inputType="number" />
 
                 <EditText
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="Hasta"
+                    android:hint="@string/textHasta"
                     android:inputType="number" />
             </LinearLayout>
 
@@ -90,7 +90,7 @@
                 style="@style/estiloTextoSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Categoria" />
+                android:text="@string/textCategoria" />
 
             <Spinner
                 android:id="@+id/spinnerSearchCategoria"
@@ -108,7 +108,7 @@
                 style="@style/estiloTextoSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Provincia" />
+                android:text="@string/textProvincia" />
 
             <Spinner
                 android:id="@+id/spinnerSearchProvincia"
@@ -126,7 +126,7 @@
                 style="@style/estiloTextoSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Marca" />
+                android:text="@string/textMarca" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -147,7 +147,7 @@
                 style="@style/estiloTextoSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Modelo" />
+                android:text="@string/textModelo" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -178,7 +178,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Buscar" />
+            android:text="@string/textBotonBuscar" />
     </FrameLayout>
 
 </RelativeLayout>

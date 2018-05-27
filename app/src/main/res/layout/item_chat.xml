@@ -29,8 +29,7 @@
                 android:id="@+id/textEmisorChat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="user@gmail.com"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -38,8 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:layout_span="2"
-                android:text="Mensaje" />
+                android:layout_span="2" />
         </LinearLayout>
     </LinearLayout>
 

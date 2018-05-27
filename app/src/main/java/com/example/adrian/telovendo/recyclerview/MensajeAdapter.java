@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.adrian.telovendo.R;
 import com.example.adrian.telovendo.activities.ActivityChat;
+import com.example.adrian.telovendo.activities.ActivityMain;
 import com.example.adrian.telovendo.clases.Mensaje;
 import com.example.adrian.telovendo.clases.Usuario;
 import com.example.adrian.telovendo.utilidades.FirebaseUtils;
@@ -72,18 +73,22 @@ public class MensajeAdapter extends RecyclerView.Adapter<MensajeAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mensaje.setText(listaMensajes.get(position).getTexto());
         holder.hora.setText(getDateDif(new Date(), listaMensajes.get(position).getFechaEnvio()));
-        holder.emisor.setText(listaMensajes.get(position).getEmisor());
+        // Comprobar si emisor es usuario logueado
+        holder.emisor.setText((
+                listaMensajes.get(position).getEmisor().equals(ActivityMain.user.getEmail())? "Tú" :
+                        listaMensajes.get(position).getEmisor()));
 
-        // Reconocer usuario a partir de email
-        Usuario myUser = (!ActivityChat.emisor.getEmail().equals(holder.emisor)) ? ActivityChat.emisor : ActivityChat.receptor;
         // Comprobar si tiene foto
-        if (myUser.getFotoPerfil() != null) {
+        if (listaMensajes.get(position).getFoto() != null) {
             // Referencia a la foto
-            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + myUser.getFotoPerfil());
+            StorageReference mStorageRef = FirebaseStorage.getInstance().getReference(firebaseUtils.STORAGE_PATH_USUARIOS + listaMensajes.get(position).getFoto());
             Glide.with(ActivityChat.context)
                     .using(new FirebaseImageLoader())
                     .load(mStorageRef)
                     .into(holder.foto);
+        }
+        else {
+            holder.foto.setImageResource(R.drawable.avatar);
         }
     }
 

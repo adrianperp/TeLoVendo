@@ -29,7 +29,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="#fff"
-            android:hint="Escribe aquí tu mensaje..."
+            android:hint="@string/textEscribeTuMensaje"
             android:inputType="textPersonName"
             android:padding="5dp" />
 
